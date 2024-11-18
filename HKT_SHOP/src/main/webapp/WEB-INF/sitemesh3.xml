@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<sitemesh>
+
+	<mapping path="/admin/*" decorator="admin.jsp" />
+	<mapping path="/vendor/*" decorator="vendor.jsp" />
+	<mapping path="/shipper/*" decorator="shipper.jsp" />
+	<mapping path="/user/*" decorator="user.jsp" />
+	<mapping path="/*" decorator="guest.jsp" />
+	<mapping path="/api*" exclude="true" />
+	
+</sitemesh>
