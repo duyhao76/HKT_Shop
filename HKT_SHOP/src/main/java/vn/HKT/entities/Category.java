@@ -7,24 +7,25 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "category")
+@Table(name = "Category", uniqueConstraints = {@UniqueConstraint(columnNames = "slug")})
+
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "_id")
+    @Column(name = "id")
     private String id; // Primary key, auto-generated
 
     @Column(name = "name", unique = true, nullable = false, length = 32)
     private String name; // Required, unique, maxLength: 32
 
-    @Column(name = "slug", unique = true)
+
+    @Column(name = "slug", nullable = false, unique = true)
     private String slug; // Auto-generated, unique
 
     @ManyToOne
