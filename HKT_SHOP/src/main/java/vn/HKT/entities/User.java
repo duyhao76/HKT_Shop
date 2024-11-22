@@ -20,39 +20,43 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id; // Primary key, auto-generated
 
-    @Column(nullable = false, length = 32)
+    @Column(name = "firstname", nullable = false, length = 32)
     private String firstname; // Required, maxLength: 32
 
-    @Column(nullable = false, length = 32)
+    @Column(name = "lastname", nullable = false, length = 32)
     private String lastname; // Required, maxLength: 32
 
-    @Column(unique = true)
+    @Column(name = "slug", unique = true)
     private String slug; // Auto-generated, unique
 
-    @Column(unique = true)
+    @Column(name = "idCard", unique = true)
     private String idCard; // Nullable, unique
 
-    @Column(unique = true)
+    @Column(name = "email", unique = true)
     private String email; // Unique
 
-    @Column(unique = true)
+    @Column(name = "phone", unique = true)
     private String phone; // Unique
 
-    @Column(nullable = false)
+    @Column(name = "isEmailActive", nullable = false)
+    @Builder.Default
     private Boolean isEmailActive = false; // Default: false
 
-    @Column(nullable = false)
+    @Column(name = "isPhoneActive", nullable = false)
+    @Builder.Default
     private Boolean isPhoneActive = false; // Default: false
 
-    @Column(nullable = false)
+    @Column(name = "salt", nullable = false)
     private String salt; // Auto-generated
 
-    @Column(nullable = false)
+    @Column(name = "hashedPassword", nullable = false)
     private String hashedPassword; // Required
 
-    @Column(nullable = false)
+    @Column(name = "role", nullable = false)
+    @Builder.Default
     private String role = "user"; // Default: "user", Enum: ["user", "admin"]
 
     @ElementCollection
@@ -60,21 +64,25 @@ public class User {
     @Column(name = "address", length = 200)
     private List<String> addresses; // MaxLength: 200, Limit 6 addresses
 
+    @Column(name = "avatar")
     private String avatar; // Path to avatar
 
+    @Column(name = "cover")
     private String cover; // Path to cover
 
-    @Column(nullable = false)
+    @Column(name = "point", nullable = false)
+    @Builder.Default
     private int point = 0; // Default: 0
 
-    @Column(nullable = false, precision = 18, scale = 2)
+    @Column(name = "eWallet", nullable = false, precision = 18, scale = 2)
+    @Builder.Default
     private BigDecimal eWallet = BigDecimal.ZERO; // Default: 0, Min: 0
 
     @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "createdAt", updatable = false)
     private LocalDateTime createdAt; // Auto-generated
 
     @UpdateTimestamp
-    @Column(name = "updated_at")
+    @Column(name = "updatedAt")
     private LocalDateTime updatedAt; // Auto-updated
 }
