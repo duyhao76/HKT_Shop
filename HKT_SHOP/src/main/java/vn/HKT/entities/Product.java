@@ -1,0 +1,109 @@
+package vn.HKT.entities;
+
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.AssertFalse;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "Product", uniqueConstraints = {@UniqueConstraint(columnNames = "slug")})
+public class Product {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", nullable = false, updatable = false)
+	private Long id; // _id: Primary key, auto-generated
+	
+	@Column(name = "name", nullable = false, length = 100)
+	private String name; // Required, maxLength: 100
+	
+	@Column(name = "slug", nullable = false, unique = true)
+    private String slug; // Slug SEO, tự động tạo từ `name`, duy nhất
+	
+	@Column(name = "description", nullable = false, length = 1000)
+    private String description; // Mô tả sản phẩm, bắt buộc, tối đa 1000 ký tự
+	
+	@Column(name = "price", nullable = false, precision = 19, scale = 2)
+	@Min(value = 0, message = "Giá phải lớn hơn 0")
+    private BigDecimal price; // Đơn giá, bắt buộc, không nhỏ hơn 0
+	
+	@Column(name = "promotional_price", nullable = false, precision = 19, scale = 2)
+	@Min(value = 0, message = "Giá phải lớn hơn 0")
+    private BigDecimal promotionalPrice; // Giá khuyến mãi
+	
+	 // Logic kiểm tra điều kiện
+    @AssertFalse(message = "Giá khuyến mãi, không lớn hơn price")
+    private boolean isPromotionalPriceValid() {
+        return promotionalPrice.compareTo(price) <= 0;
+    }
+	
+    @Column(name = "quantity", nullable = false)
+    @Min(value = 0, message = "Số lượng phải lớn hơn 0")
+    private int quantity; // Số lượng sản phẩm, bắt buộc, không nhỏ hơn 0
+    
+    @Column(name = "sold", nullable = false)
+    @Min(value = 0, message = "Số lượng đã bán phải lớn hơn 0")
+    private int sold = 0; // Số lượng đã bán, mặc định là 0
+    
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive = true; // Trạng thái cấp phép, mặc định là `true`
+    
+    @Column(name = "is_selling", nullable = false)
+    private boolean isSelling = true; // Trạng thái đang mở bán, mặc định là `true`
+    
+    @ElementCollection
+    @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
+    @Column(name = "image_url")
+    private List<String> listImages = new ArrayList<>(); // Danh sách URL hình ảnh
+    
+    @Column(name = "category_id", nullable = false)
+    private Long categoryId; // ID của category, ref: Category
+    
+    @ElementCollection
+    @CollectionTable(name = "product_style_values", joinColumns = @JoinColumn(name = "product_id"))
+    @Column(name = "style_value_id")
+    private List<Long> styleValueIds = new ArrayList<>(); // Style values của product
+    
+    @ManyToOne
+    @JoinColumn(name = "store_id", nullable = false)
+    private Store storeId; // Store bán product
+    
+    @Column(name = "rating", nullable = false)
+    @Min(0)
+    @Max(5)
+    private int rating = 3; // Rating của product (default: 3)
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Date createdAt; // Thời gian khởi tạo, tự động tạo
+	
+	@Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at", nullable = false)
+    private Date updatedAt; // Thời gian cập nhật, tự động cập nhật
+}
