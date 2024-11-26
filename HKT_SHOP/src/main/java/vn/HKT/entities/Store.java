@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Store")
+@Table(name = "store")
 public class Store {
 
     @Id
@@ -33,7 +33,7 @@ public class Store {
     @Column(name = "slug", unique = true)
     private String slug; // Auto-generated, unique
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner; // Reference to User entity (owner of the store)
 
@@ -63,7 +63,7 @@ public class Store {
     @Builder.Default
     private List<String> featuredImages = new ArrayList<>(); // List of featured images (URLs)
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "commission_id")
     private Commission commission; // Reference to Commission entity
 
