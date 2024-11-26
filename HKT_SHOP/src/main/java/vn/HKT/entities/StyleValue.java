@@ -34,6 +34,7 @@ public class StyleValue {
 	private String styleId; // Id của product được review (required, ref: Style)
 	
 	@Column(name = "is_deleted", nullable = false)
+	@Builder.Default
     private Boolean isDeleted = false; // Soft delete, mặc định là false
 	
 	@Temporal(TemporalType.TIMESTAMP)

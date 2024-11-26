@@ -29,6 +29,7 @@ public class Delivery {
     private double price; // Đơn giá (required, min 0)
 	
 	@Column(name = "is_deleted", nullable = false)
+	@Builder.Default
     private boolean isDeleted = false; // Dùng cho soft-delete (default: false)
 	
 	@Column(name = "created_at", nullable = false, updatable = false)

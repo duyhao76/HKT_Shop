@@ -27,6 +27,7 @@ public class Style {
     private List<String> categoryIds; // Tập các category ID, tham chiếu tới category
 
 	@Column(name = "is_deleted", nullable = false)
+	@Builder.Default
     private Boolean isDeleted = false; // Soft delete, mặc định là false
 	
 	@Temporal(TemporalType.TIMESTAMP)

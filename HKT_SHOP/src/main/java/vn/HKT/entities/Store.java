@@ -40,6 +40,7 @@ public class Store {
     @ElementCollection
     @CollectionTable(name = "store_staffs", joinColumns = @JoinColumn(name = "store_id"))
     @Column(name = "staff_id")
+    @Builder.Default
     private List<String> staffIds = new ArrayList<>(); // List of staff IDs (ObjectId - reference to User)
 
     @Column(name = "is_active", nullable = false)
@@ -59,6 +60,7 @@ public class Store {
     @ElementCollection
     @CollectionTable(name = "store_featured_images", joinColumns = @JoinColumn(name = "store_id"))
     @Column(name = "image_url")
+    @Builder.Default
     private List<String> featuredImages = new ArrayList<>(); // List of featured images (URLs)
 
     @ManyToOne

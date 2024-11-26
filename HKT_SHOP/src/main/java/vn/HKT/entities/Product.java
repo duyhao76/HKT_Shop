@@ -68,17 +68,21 @@ public class Product {
     
     @Column(name = "sold", nullable = false)
     @Min(value = 0, message = "Số lượng đã bán phải lớn hơn 0")
+    @Builder.Default
     private int sold = 0; // Số lượng đã bán, mặc định là 0
     
     @Column(name = "is_active", nullable = false)
+    @Builder.Default
     private boolean isActive = true; // Trạng thái cấp phép, mặc định là `true`
     
     @Column(name = "is_selling", nullable = false)
+    @Builder.Default
     private boolean isSelling = true; // Trạng thái đang mở bán, mặc định là `true`
     
     @ElementCollection
     @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
     @Column(name = "image_url")
+    @Builder.Default
     private List<String> listImages = new ArrayList<>(); // Danh sách URL hình ảnh
     
     @Column(name = "category_id", nullable = false)
@@ -87,6 +91,7 @@ public class Product {
     @ElementCollection
     @CollectionTable(name = "product_style_values", joinColumns = @JoinColumn(name = "product_id"))
     @Column(name = "style_value_id")
+    @Builder.Default
     private List<Long> styleValueIds = new ArrayList<>(); // Style values của product
     
     @ManyToOne
@@ -96,6 +101,7 @@ public class Product {
     @Column(name = "rating", nullable = false)
     @Min(0)
     @Max(5)
+    @Builder.Default
     private int rating = 3; // Rating của product (default: 3)
     
     @Temporal(TemporalType.TIMESTAMP)
