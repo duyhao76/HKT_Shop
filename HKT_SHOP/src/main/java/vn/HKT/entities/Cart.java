@@ -13,20 +13,20 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Cart")
+@Table(name = "Cart") // Đặt tên bảng ở dạng số nhiều để phản ánh danh sách các giỏ hàng
 public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // Primary key, auto-generated
 
-    //@ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    //private User user; // Reference to User entity
+    private User user; // Reference to User entity
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "store_id", nullable = false)
-   //private Store store; // Reference to Store entity
+    private Store store; // Reference to Store entity
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
@@ -36,4 +36,3 @@ public class Cart {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt; // Automatically updated modification time
 }
-
