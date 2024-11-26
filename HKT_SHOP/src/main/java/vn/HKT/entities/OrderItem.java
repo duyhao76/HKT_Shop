@@ -14,23 +14,26 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "OrderItem")
+@Table(name = "OrderItem") // Tên bảng được đặt ở dạng số nhiều để thể hiện danh sách các order items
 public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // Primary key, auto-generated
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "order_id", nullable = false)
     private Order order; // Reference to Order entity
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "product_id", nullable = false)
-    // private Product product; // Reference to Product entity
+    private Product product; // Reference to Product entity
 
     @ElementCollection
-    @CollectionTable(name = "OrderItem_StyleValues", joinColumns = @JoinColumn(name = "order_item_id"))
+    @CollectionTable(
+        name = "OrderItem_StyleValues", 
+        joinColumns = @JoinColumn(name = "order_item_id")
+    )
     @Column(name = "style_value_id", nullable = false)
     private List<Long> styleValueIds; // Reference to StyleValue (Array of ObjectIds)
 
@@ -45,4 +48,3 @@ public class OrderItem {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt; // Automatically updated modification time
 }
-
