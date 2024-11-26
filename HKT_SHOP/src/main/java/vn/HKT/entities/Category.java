@@ -6,6 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
@@ -13,7 +15,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "Category", uniqueConstraints = {@UniqueConstraint(columnNames = "slug")})
-
 public class Category {
 
     @Id
@@ -24,13 +25,16 @@ public class Category {
     @Column(name = "name", unique = true, nullable = false, length = 32)
     private String name; // Required, unique, maxLength: 32
 
-
     @Column(name = "slug", nullable = false, unique = true)
     private String slug; // Auto-generated, unique
 
     @ManyToOne
-    @JoinColumn(name = "parent_category_id")
-    private Category parentCategory; // Nullable, ref: Category (parent)
+    @JoinColumn(name = "parent_category_id") // Foreign key to the parent category
+    private Category parentCategory; // Nullable, reference to parent category
+
+    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Category> subCategories = new ArrayList<>(); // List of subcategories
 
     @Column(name = "image")
     private String image; // Image URL for the category
