@@ -1,0 +1,5 @@
+package vn.HKT.entities;
+
+public class UserFollowStore {
+
+}
