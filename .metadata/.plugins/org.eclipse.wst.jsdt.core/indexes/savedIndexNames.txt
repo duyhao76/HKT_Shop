@@ -1,0 +1,5 @@
+INDEX VERSION 1.4+D:\HKT_Shop\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+3972006402.index
+619961791.index
+988437971.index
+3249337582.index

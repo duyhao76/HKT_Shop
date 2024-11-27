@@ -6,19 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.AssertFalse;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -85,8 +73,9 @@ public class Product {
     @Builder.Default
     private List<String> listImages = new ArrayList<>(); // Danh sách URL hình ảnh
     
-    @Column(name = "category_id", nullable = false)
-    private Long categoryId; // ID của category, ref: Category
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category; // Tham chiếu đến bảng Category
     
     @ElementCollection
     @CollectionTable(name = "product_style_values", joinColumns = @JoinColumn(name = "product_id"))
@@ -110,6 +99,9 @@ public class Product {
     private Date createdAt; // Thời gian khởi tạo, tự động tạo
 	
 	@Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "updated_at", nullable = false)
     private Date updatedAt; // Thời gian cập nhật, tự động cập nhật
+	
+	@OneToMany(mappedBy = "productId", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<UserFollowProduct> followedByUsers = new ArrayList<>();
 }

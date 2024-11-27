@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -85,4 +86,10 @@ public class User {
     @UpdateTimestamp
     @Column(name = "updatedAt")
     private LocalDateTime updatedAt; // Auto-updated
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserFollowStore> followedStores = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserFollowProduct> followedProducts = new ArrayList<>();
 }
