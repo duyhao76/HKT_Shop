@@ -36,6 +36,10 @@ public class Category {
     @Builder.Default
     private List<Category> subCategories = new ArrayList<>(); // List of subcategories
 
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Product> products = new ArrayList<>(); // Liên kết ngược tới Product
+    
     @Column(name = "image")
     private String image; // Image URL for the category
 

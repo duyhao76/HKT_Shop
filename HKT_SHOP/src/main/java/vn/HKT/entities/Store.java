@@ -22,7 +22,7 @@ public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private String id; // Primary key, auto-generated
+    private Long id; // Primary key, auto-generated
 
     @Column(name = "name", unique = true, nullable = false, length = 100)
     private String name; // Required, maxLength: 100, unique
@@ -97,4 +97,7 @@ public class Store {
             this.rating = rating;
         }
     }
+    
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserFollowStore> followers = new ArrayList<>();
 }

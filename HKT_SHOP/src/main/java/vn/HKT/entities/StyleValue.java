@@ -2,14 +2,7 @@ package vn.HKT.entities;
 
 import java.util.Date;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,8 +23,9 @@ public class StyleValue {
 	@Column(name = "name", nullable = false, unique = true, length = 32)
 	private String name; // Required, maxLength: 32, unique
 
-	@Column(name = "style_id", nullable = false)
-	private String styleId; // Id của product được review (required, ref: Style)
+	@ManyToOne  // Quan hệ nhiều StyleValue thuộc một Style
+    @JoinColumn(name = "style_id", nullable = false) // Tạo foreign key liên kết với bảng Style
+    private Style style; // Tham chiếu tới Style
 	
 	@Column(name = "is_deleted", nullable = false)
 	@Builder.Default
