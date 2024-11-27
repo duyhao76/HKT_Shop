@@ -1,5 +1,6 @@
 package vn.HKT.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,10 +23,19 @@ public class Style {
 	@Column(name = "name", nullable = false, unique = true, length = 32)
 	private String name; // Required, maxLength: 32, unique
 	
-	@ElementCollection
-	@CollectionTable(name = "style_category_ids", joinColumns = @JoinColumn(name = "style_id"))
-    private List<String> categoryIds; // Tập các category ID, tham chiếu tới category
+	@ManyToMany
+    @JoinTable(
+        name = "style_category", // Tên bảng liên kết
+        joinColumns = @JoinColumn(name = "style_id"),
+        inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+	@Builder.Default
+    private List<Category> categories = new ArrayList<>(); // Tập các Category liên kết
 
+	@OneToMany(mappedBy = "style", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<StyleValue> styleValues = new ArrayList<>(); // Thêm mối quan hệ với StyleValue
+	
 	@Column(name = "is_deleted", nullable = false)
 	@Builder.Default
     private Boolean isDeleted = false; // Soft delete, mặc định là false
