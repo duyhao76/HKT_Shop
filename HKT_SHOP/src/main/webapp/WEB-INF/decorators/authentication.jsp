@@ -43,4 +43,15 @@
 	<sitemesh:write property="body" />
     <!--Kết thúc nội dung chính-->
     
+    <!-- Javascript Files -->
+
+    <!-- initialize jQuery Library -->
+    <script src="${URL}login-page-devforum/js/jquery-2.2.4.min.js"></script>
+
+    <!-- for Bootstrap js -->
+    <script src="${URL}login-page-devforum/js/bootstrap.min.js"></script>
+
+    <!-- Custom js-->
+    <script src="${URL}login-page-devforum/js/custom.js"></script>
+    
 </html>

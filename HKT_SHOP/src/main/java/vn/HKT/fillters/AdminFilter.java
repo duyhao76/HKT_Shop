@@ -12,7 +12,7 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import vn.HKT.entities.User;
+import vn.HKT.entities.Users;
 
 @WebFilter(urlPatterns = {"/admin/*"})
 public class AdminFilter implements Filter {
@@ -36,10 +36,10 @@ public class AdminFilter implements Filter {
         HttpSession session = req.getSession();
 
         // Kiểm tra người dùng trong session
-        User user = (User) session.getAttribute("account");
+        Users user = (Users) session.getAttribute("account");
 
         // Kiểm tra nếu người dùng là admin (giả sử roleid 2 là admin)
-        if (user != null && user.getRole() == "admin") {
+        if (user != null && user.getRole().getRoleName() == "admin") {
             chain.doFilter(request, response); // Cho phép truy cập nếu đúng quyền
         } else {
             // Nếu không có quyền admin, chuyển hướng về trang home
