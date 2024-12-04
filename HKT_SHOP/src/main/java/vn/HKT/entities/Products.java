@@ -2,7 +2,6 @@ package vn.HKT.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -38,11 +37,16 @@ public class Products {
     private String storageConditions; //Điều kiện bảo quản
     
     @Column
-    private LocalDateTime createdDate;
+    private LocalDate createdDate;
+    
+    @Column(nullable = false, columnDefinition = "boolean default true")
+    private Boolean isActive;
     
     @OneToMany(mappedBy = "product")
     private List<OrderDetails> orderDetails;
     
     @OneToMany(mappedBy = "product")
     private List<Inventory> inventoryRecords;
+    
+    
 }

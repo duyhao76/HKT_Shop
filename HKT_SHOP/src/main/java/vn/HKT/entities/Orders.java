@@ -1,7 +1,7 @@
 package vn.HKT.entities;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -22,7 +22,7 @@ public class Orders {
     private Users user;
     
     @Column
-    private LocalDateTime orderDate;
+    private LocalDate orderDate;
     
     @Column
     private BigDecimal totalAmount;
