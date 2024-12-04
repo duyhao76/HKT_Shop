@@ -54,7 +54,12 @@ public class Users {
     @PrePersist
     protected void onCreate() {
         createdDate = LocalDateTime.now(); // Gán thời gian tạo khi insert
+        if (role == null) { // Nếu role chưa được chỉ định
+            EntityManager em = Persistence.createEntityManagerFactory("HKT_PU").createEntityManager();
+            role = em.find(Roles.class, 1L); // Lấy role với ID = 1 từ DB
+        }
     }
+
 
     @PreUpdate
     protected void onUpdate() {

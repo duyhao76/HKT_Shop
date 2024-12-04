@@ -1,123 +1,175 @@
 package vn.HKT.daos.Impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 import vn.HKT.configs.JPAConfig;
 import vn.HKT.daos.IUserDao;
 import vn.HKT.entities.Users;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class UserDaoImpl implements IUserDao {
 
-	public Connection conn = null;
-	public PreparedStatement ps = null;
-	public ResultSet rs = null;
-	
-	EntityManager enma = JPAConfig.getEntityManager();
-	EntityTransaction trans = enma.getTransaction();
+	private EntityManager entityManager;
 
-	@Override
-	public Users findByUserName(String username) {
-		String sql = "select * from USERS where username = ?";
-
-		try {
-			
-			ps = conn.prepareStatement(sql);
-			ps.setString(1, username);
-			rs = ps.executeQuery();
-			while (rs.next()) {
-				Users user = new Users();
-				user.setUserId(Long.parseLong(rs.getString("userId")));
-				user.setUsername(rs.getString("username"));
-				user.setEmail(rs.getString("email"));
-				user.setPassword(rs.getString("password"));
-				user.getRole();
-				user.getCreatedDate();
-				user.getLastLogin();
-				user.getToken();
-				user.getExpiry();
-				return user;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+	public UserDaoImpl() {
+		this.entityManager = JPAConfig.getEntityManager();
 	}
 
 	@Override
-	public void insert(Users user) throws SQLException, Exception {
-		String sql = "INSERT INTO USERS (username, email, password)" + "VALUES (?, ?, ?)";
-
+	public Users findByUserName(String username) {
+		String jpql = "SELECT u FROM Users u WHERE u.username = :username";
 		try {
-			
-			ps = conn.prepareStatement(sql);
-			ps.setString(1, user.getUsername());
-			ps.setString(2, user.getEmail());
-			ps.setString(3, user.getPassword());
-			ps.executeUpdate();
+			TypedQuery<Users> query = entityManager.createQuery(jpql, Users.class);
+			query.setParameter("username", username);
+			return query.getSingleResult();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null; // Không tìm thấy user hoặc lỗi
+		}
+	}
+
+	@Override
+	public void insert(Users user) {
+		EntityTransaction transaction = entityManager.getTransaction();
+		try {
+			transaction.begin();
+			entityManager.persist(user);
+			transaction.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (transaction.isActive()) {
+				transaction.rollback();
+			}
 		}
 	}
 
 	@Override
 	public Users findByEmail(String email) {
-		String sql = "select * from USERS where email = ?";
+		String jpql = "SELECT u FROM Users u WHERE u.email = :email";
 		try {
-			
-			ps = conn.prepareStatement(sql);
-			ps.setString(1, email);
-			rs = ps.executeQuery();
-			while (rs.next()) {
-				Users user = new Users();
-				user.setUserId(Long.parseLong(rs.getString("userId")));
-				user.setUsername(rs.getString("username"));
-				user.setEmail(rs.getString("email"));
-				user.setPassword(rs.getString("password"));
-				user.getRole();
-				user.getCreatedDate();
-				user.getLastLogin();
-				user.getToken();
-				user.getExpiry();
-				return user;
-			}
+			TypedQuery<Users> query = entityManager.createQuery(jpql, Users.class);
+			query.setParameter("email", email);
+			return query.getSingleResult();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null; // Không tìm thấy user hoặc lỗi
 		}
-		return null;
+	}
+
+	@Override
+	public void updatePasswordByEmail(Users user) {
+		EntityTransaction transaction = entityManager.getTransaction();
+		try {
+			transaction.begin();
+			Users existingUser = findByEmail(user.getEmail());
+			if (existingUser != null) {
+				existingUser.setPassword(user.getPassword());
+				entityManager.merge(existingUser); // Cập nhật user
+			}
+			transaction.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (transaction.isActive()) {
+				transaction.rollback();
+			}
+		}
+	}
+
+	@Override
+	public boolean isResetTokenValid(String token) {
+		String jpql = "SELECT u.expiry FROM Users u WHERE u.token = :token";
+		try {
+			TypedQuery<Timestamp> query = entityManager.createQuery(jpql, Timestamp.class);
+			query.setParameter("token", token);
+			Timestamp expiryDate = query.getSingleResult();
+			Timestamp currentTime = Timestamp.valueOf(LocalDateTime.now());
+
+			System.out.println("Thời gian hiện tại: " + currentTime);
+			System.out.println("Thời gian hết hạn: " + expiryDate);
+
+			return expiryDate != null && expiryDate.after(currentTime);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false; // Không tìm thấy token hoặc lỗi
+		}
+	}
+
+	@Override
+	public void updatePasswordByToken(String token, String hashedPassword) {
+		EntityTransaction transaction = entityManager.getTransaction();
+		try {
+			transaction.begin();
+			String jpql = "SELECT u FROM Users u WHERE u.token = :token";
+			TypedQuery<Users> query = entityManager.createQuery(jpql, Users.class);
+			query.setParameter("token", token);
+
+			Users user = query.getSingleResult();
+			if (user != null) {
+				user.setPassword(hashedPassword);
+				user.setToken(null); // Xóa token sau khi sử dụng
+				user.setExpiry(null);
+				entityManager.merge(user);
+			}
+			transaction.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (transaction.isActive()) {
+				transaction.rollback();
+			}
+		}
+	}
+
+	@Override
+	public void updateResetToken(String email, String token, Timestamp expiry) {
+		EntityTransaction transaction = entityManager.getTransaction();
+		try {
+			transaction.begin();
+			Users user = findByEmail(email);
+			if (user != null) {
+				user.setToken(token);
+				user.setExpiry(expiry.toLocalDateTime());
+				entityManager.merge(user);
+			}
+			transaction.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (transaction.isActive()) {
+				transaction.rollback();
+			}
+		}
 	}
 	
-	@Override
-	public void updatePasswordByEmail(Users user) throws SQLException {
-	    String sql = "UPDATE USERS SET password = ? WHERE email = ?";
-	    try (
-	         PreparedStatement ps = conn.prepareStatement(sql)) {
-	        ps.setString(1, user.getPassword());
-	        ps.setString(2, user.getEmail());
-	        ps.executeUpdate();
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        throw e;
-	    }
-	}
-
-
 	public static void main(String[] args) {
-//		UserDaoImpl userDao = new UserDaoImpl(); // Tạo đối tượng DAO để gọi hàm kiểm tra
+	    UserDaoImpl userDao = new UserDaoImpl();
+
+	    // Thêm user mới
+	    Users user = Users.builder()
+	            .username("johndoe")
+	            .password("password123")
+	            .email("john.doe@example.com")
+	            .build();
+	    userDao.insert(user);
+
+	    // Tìm user theo username
+	    Users foundUser = userDao.findByUserName("johndoe");
+	    System.out.println(foundUser);
+
+	    // Cập nhật mật khẩu qua email
+	    foundUser.setPassword("newpassword");
+	    userDao.updatePasswordByEmail(foundUser);
+
+//	    // Cập nhật token reset mật khẩu
+//	    userDao.updateResetToken("john.doe@example.com", "reset-token-123", Timestamp.valueOf(LocalDateTime.now().plusHours(1)));
 //
-//		//Thử nghiệm với các token khác nhau (đảm bảo token đã tồn tại trong databaseđể kiểm tra)
-//		String testToken1 = "54f006e1-ffb5-441c-9dad-14025547153b"; // Token có thể tồn tại và hợp lệ Kiểm tra token hợp lệ
-//		boolean isValid1 = userDao.isResetTokenValid(testToken1);
-//		System.out.println("Token " + testToken1 + " hợp lệ: " + isValid1);
-//		System.out.println("Thời gian hiện tại (ứng dụng): " + new Timestamp(System.currentTimeMillis()));
+//	    // Kiểm tra token reset hợp lệ
+//	    boolean isValid = userDao.isResetTokenValid("reset-token-123");
+//	    System.out.println("Token hợp lệ: " + isValid);
 //
-//		new Users();
-//		//userDao.findByResetPasswordToken(testToken1);
+//	    // Đổi mật khẩu bằng token
+//	    userDao.updatePasswordByToken("reset-token-123", "new-secure-password");
 	}
 
 }

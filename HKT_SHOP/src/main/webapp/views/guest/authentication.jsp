@@ -27,17 +27,33 @@
                             <!-- social login buttons start -->
                             <div class="row social-buttons">
                                 <div class="col-xs-4 col-sm-4 col-md-12">
-                                    <a href="#" class="btn btn-block btn-facebook">
+                                    <a href="https://www.facebook.com/v7.0/dialog/oauth?
+								        scope=email,public_profile&
+								        access_type=offline&
+								        include_granted_scopes=true&
+								        response_type=code&
+								        redirect_uri=https://localhost:8443/HKT_SHOP/authentication/auth/facebook&
+								        client_id=575064428819129" 
+								        class="btn btn-block btn-facebook">
                                         <i class="fa fa-facebook"></i> <span class="hidden-xs hidden-sm">Signin with facebook</span>
                                     </a>
                                 </div>
+                                <!--
                                 <div class="col-xs-4 col-sm-4 col-md-12">
                                     <a href="#" class="btn btn-block btn-twitter">
                                         <i class="fa fa-twitter"></i> <span class="hidden-xs hidden-sm">Signin with twitter</span>
                                     </a>
                                 </div>
+                                -->
                                 <div class="col-xs-4 col-sm-4 col-md-12">
-                                    <a href="#" class="btn btn-block btn-google">
+                                    <a href="https://accounts.google.com/o/oauth2/v2/auth?
+											scope=email%20profile&
+											access_type=offline&
+											include_granted_scopes=true&
+											response_type=code&
+											redirect_uri=https://localhost:8443/HKT_SHOP/authentication/auth/google&
+											client_id=1013728767709-o6q514dv1kk6h8eh3asqsalkdi3tbfud.apps.googleusercontent.com" 
+										class="btn btn-block btn-google">
                                         <i class="fa fa-google-plus"></i> <span class="hidden-xs hidden-sm">Signin with google</span>
                                     </a>
                                 </div>
@@ -57,13 +73,24 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12">
-                                    <form name="loginForm" class="loginForm" action="#" method="POST">
+                                    <form name="loginForm" class="loginForm"  action="<c:url value='/authentication/login' />" method="POST">
+                                    
+                                    	 <!-- Hiển thị thông báo thành công -->
+										<c:if test="${not empty successMessage}">
+										    <div class="alert alert-success">${successMessage}</div>
+										</c:if>
+										
+										<!-- Hiển thị thông báo lỗi -->
+										<c:if test="${not empty errorMessage}">
+										    <div class="alert alert-danger">${errorMessage}</div>
+										</c:if>
+                                    
                                         <div class="form-group">
-                                            <input type="email" class="form-control email" name="username" placeholder="Email address">
+                                            <input type="email" class="form-control email" name="username" placeholder="Email address" value="${rememberedEmail != null ? rememberedEmail : ''}" required >
                                         </div>
                                         <div class="form-group">
                                             <div class="pwdMask">
-                                                <input type="password" class="form-control password" name="password" placeholder="Password">
+                                                <input type="password" class="form-control password" name="password" placeholder="Password" required >
                                                 <span class="fa fa-eye-slash pwd-toggle"></span>
                                             </div>
                                         </div>
@@ -71,7 +98,7 @@
                                         <div class="row remember-row">
                                             <div class="col-xs-6 col-sm-6">
                                                 <label class="checkbox text-left">
-                                                    <input type="checkbox" value="remember-me">
+                                                    <input type="checkbox" name="remember" value="remember-me" ${rememberChecked != null && rememberChecked ? "checked" : ""} >
                                                     <span class="label-text">Remember me</span>
                                                 </label>
                                             </div>
@@ -97,7 +124,7 @@
                                     <div class="authfy-heading">
                                         <h3 class="auth-title">Sign up for free!</h3>
                                     </div>
-                                    <form name="signupForm" class="signupForm" action="#" method="POST">
+                                    <form name="signupForm" class="signupForm" action="<c:url value='/authentication/signup' />" method="POST">
                                         <div class="form-group">
                                             <input type="email" class="form-control" name="username" placeholder="Email address">
                                         </div>
@@ -111,7 +138,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <p class="term-policy text-muted small">I agree to the <a href="#">privacy policy</a> and <a href="#">terms of service</a>.</p>
+                                            <p class="term-policy text-muted small">I agree to the <a href="https://policies.google.com/privacy?hl=en">privacy policy</a> and <a href="https://policies.google.com/terms?hl=en">terms of service</a>.</p>
                                         </div>
                                         <div class="form-group">
                                             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up with email</button>
@@ -130,7 +157,18 @@
                                         <h3 class="auth-title">Recover your password</h3>
                                         <p>Fill in your e-mail address below and we will send you an email with further instructions.</p>
                                     </div>
-                                    <form name="forgetForm" class="forgetForm" action="#" method="POST">
+                                    <form name="forgetForm" class="forgetForm" action="<c:url value='/authentication/forgotpassword' />" method="POST">
+                                    
+                                    	 <!-- Hiển thị thông báo thành công -->
+										<c:if test="${not empty successMessage}">
+										    <div class="alert alert-success">${successMessage}</div>
+										</c:if>
+										
+										<!-- Hiển thị thông báo lỗi -->
+										<c:if test="${not empty errorMessage}">
+										    <div class="alert alert-danger">${errorMessage}</div>
+										</c:if>
+                                    
                                         <div class="form-group">
                                             <input type="email" class="form-control" name="username" placeholder="Email address">
                                         </div>
