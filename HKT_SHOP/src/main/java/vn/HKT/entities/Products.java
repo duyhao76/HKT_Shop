@@ -42,11 +42,13 @@ public class Products {
     @Column(nullable = false, columnDefinition = "boolean default true")
     private Boolean isActive;
     
+    @Column(columnDefinition = "nvarchar(max)")
+    private String imgPath;
+    
     @OneToMany(mappedBy = "product")
     private List<OrderDetails> orderDetails;
     
     @OneToMany(mappedBy = "product")
     private List<Inventory> inventoryRecords;
-    
     
 }
