@@ -22,13 +22,13 @@
     <meta name="author" content="devforum.info">
 
 
-	<title>Login Page - TomeKeeper</title>
+	<title>Login Page - HKT_SHOP</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/icon" href="${URL}login-page-devforum/images/android-icon-36x36.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="${URL}login-page-devforum/images/android-icon-36x36.png">
-    <link rel="icon" type="image/png" sizes="48x48" href="${URL}login-page-devforum/images/android-icon-48x48.png">
-    <link rel="icon" type="image/png" sizes="72x72" href="${URL}login-page-devforum/images/android-icon-72x72.png">
+    <link rel="shortcut icon" type="image/icon" href="${URL}login-page-devforum/images/hktshop-logo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="${URL}login-page-devforum/images/hktshop-logo.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="${URL}login-page-devforum/images/hktshop-logo.png">
+    <link rel="icon" type="image/png" sizes="72x72" href="${URL}login-page-devforum/images/hktshop-logo.png">
 
     <!-- Main structure css file -->
     <link rel="stylesheet" href="${URL}login-page-devforum/css/login-style.css">

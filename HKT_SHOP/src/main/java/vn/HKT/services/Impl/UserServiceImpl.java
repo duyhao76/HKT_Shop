@@ -6,15 +6,20 @@ import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import vn.HKT.daos.IRoleDao;
 import vn.HKT.daos.IUserDao;
+import vn.HKT.daos.Impl.RoleDaoImpl;
 import vn.HKT.daos.Impl.UserDaoImpl;
+import vn.HKT.entities.Roles;
 import vn.HKT.entities.Users;
 import vn.HKT.services.IUserService;
+import vn.HKT.utils.Constant;
 import vn.HKT.utils.HashPasswordUtils;
 
 public class UserServiceImpl implements IUserService{
 
 	IUserDao userDao = new UserDaoImpl();
+	IRoleDao roleDao = new RoleDaoImpl();
 	
 	@Override
 	public Users login(String email, String password) {
@@ -28,28 +33,42 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	public boolean register(String email, String fullName, String password) {
-		Users existingUser = userDao.findByEmail(email);
-		if (existingUser != null) {
-			return false;
-		}
-		
-		// Kiểm tra nếu password là null, đặt mật khẩu trống hoặc mật khẩu tạm
-	    if (password == null) {
-	        password = "123456"; // hoặc sử dụng mật khẩu tạm thời khác
+	    // Kiểm tra nếu user đã tồn tại
+	    Users existingUser = userDao.findByEmail(email);
+	    if (existingUser != null) {
+	        return false; // Email đã được sử dụng
 	    }
-	    
-		Users newUser = new Users();
-		newUser.setEmail(email);
-		newUser.setUsername(fullName);
-		newUser.setPassword(HashPasswordUtils.hashPasswordWithSHA256(password));
-		try {
-			userDao.insert(newUser);
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
+
+	    // Kiểm tra nếu password là null, đặt mật khẩu tạm thời
+	    if (password == null) {
+	        password = "123456"; // Mật khẩu mặc định
+	    }
+
+	    // Tạo user mới
+	    Users newUser = new Users();
+	    newUser.setEmail(email);
+	    newUser.setUsername(fullName);
+	    newUser.setPassword(HashPasswordUtils.hashPasswordWithSHA256(password));
+
+	    // Gán roleId dựa trên email
+	    Roles role;
+		if (email.contains(Constant.STUDENT_EMAIL_DOMAIN)) {
+	        role = roleDao.findById(2L); // Role ID = 2 (admin, hoặc student role)
+	    } else {
+	        role = roleDao.findById(1L); // Role ID = 1 (user)
+	    }
+	    newUser.setRole(role);
+
+	    // Lưu user vào database
+	    try {
+	        userDao.insert(newUser);
+	        return true; // Đăng ký thành công
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false; // Đăng ký thất bại
+	    }
 	}
+
 
 	@Override
 	public Users FindByEmail(String email) {

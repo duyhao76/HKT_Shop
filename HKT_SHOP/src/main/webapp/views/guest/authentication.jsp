@@ -20,7 +20,7 @@
                         <div class="headline">
                             <!-- brand-logo start -->
                             <div class="brand-logo">
-                                <a href="index.html"><img src="${URL}login-page-devforum/images/devforum.png" width="200" alt="brand-logo"></a>
+                                <a href="authentication.jsp"><img src="${URL}login-page-devforum/images/hktshop-logo.png" width="200" alt="brand-logo"></a>
                             </div>
                             <!-- ./brand-logo -->
                             <p>Login using social media to get quick access</p>
@@ -52,7 +52,7 @@
 											include_granted_scopes=true&
 											response_type=code&
 											redirect_uri=https://localhost:8443/HKT_SHOP/authentication/auth/google&
-											client_id=1013728767709-o6q514dv1kk6h8eh3asqsalkdi3tbfud.apps.googleusercontent.com" 
+											client_id=758528731083-1n9qgoodpn8k1u0rjgpu4a7ukmrv06vl.apps.googleusercontent.com" 
 										class="btn btn-block btn-google">
                                         <i class="fa fa-google-plus"></i> <span class="hidden-xs hidden-sm">Signin with google</span>
                                     </a>
@@ -73,20 +73,23 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12">
-                                    <form name="loginForm" class="loginForm"  action="<c:url value='/authentication/login' />" method="POST">
-                                    
-                                    	 <!-- Hiển thị thông báo thành công -->
-										<c:if test="${not empty successMessage}">
-										    <div class="alert alert-success">${successMessage}</div>
-										</c:if>
-										
-										<!-- Hiển thị thông báo lỗi -->
-										<c:if test="${not empty errorMessage}">
-										    <div class="alert alert-danger">${errorMessage}</div>
-										</c:if>
-                                    
+                                
+                                	<!-- Khối chứa thông báo -->
+							        <div id="notification-container">
+							            <!-- Hiển thị thông báo thành công -->
+							            <c:if test="${not empty successMessage}">
+							                <div class="alert alert-success notification">${successMessage}</div>
+							            </c:if>
+							
+							            <!-- Hiển thị thông báo lỗi -->
+							            <c:if test="${not empty errorMessage}">
+							                <div class="alert alert-danger notification">${errorMessage}</div>
+							            </c:if>
+							        </div>
+                                
+                                    <form name="loginForm" class="loginForm"  action="<c:url value='/authentication/login' />" method="POST">                                                                  
                                         <div class="form-group">
-                                            <input type="email" class="form-control email" name="username" placeholder="Email address" value="${rememberedEmail != null ? rememberedEmail : ''}" required >
+                                            <input type="email" class="form-control email" name="email" placeholder="Email address" value="${rememberedEmail != null ? rememberedEmail : ''}" required >
                                         </div>
                                         <div class="form-group">
                                             <div class="pwdMask">
@@ -124,16 +127,30 @@
                                     <div class="authfy-heading">
                                         <h3 class="auth-title">Sign up for free!</h3>
                                     </div>
+                                    
+                                    <!-- Khối chứa thông báo -->
+							        <div id="notification-container">
+							            <!-- Hiển thị thông báo thành công -->
+							            <c:if test="${not empty successMessage}">
+							                <div class="alert alert-success notification">${successMessage}</div>
+							            </c:if>
+							
+							            <!-- Hiển thị thông báo lỗi -->
+							            <c:if test="${not empty errorMessage}">
+							                <div class="alert alert-danger notification">${errorMessage}</div>
+							            </c:if>
+							        </div>
+                                    
                                     <form name="signupForm" class="signupForm" action="<c:url value='/authentication/signup' />" method="POST">
                                         <div class="form-group">
-                                            <input type="email" class="form-control" name="username" placeholder="Email address">
+                                            <input type="email" class="form-control" name="email" placeholder="Email address" required >
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" name="fullname" placeholder="Full name">
+                                            <input type="text" class="form-control" name="fullname" placeholder="Full name" required >
                                         </div>
                                         <div class="form-group">
                                             <div class="pwdMask">
-                                                <input type="password" class="form-control" name="password" placeholder="Password">
+                                                <input type="password" class="form-control" name="password" placeholder="Password" required >
                                                 <span class="fa fa-eye-slash pwd-toggle"></span>
                                             </div>
                                         </div>
@@ -157,20 +174,23 @@
                                         <h3 class="auth-title">Recover your password</h3>
                                         <p>Fill in your e-mail address below and we will send you an email with further instructions.</p>
                                     </div>
-                                    <form name="forgetForm" class="forgetForm" action="<c:url value='/authentication/forgotpassword' />" method="POST">
                                     
-                                    	 <!-- Hiển thị thông báo thành công -->
-										<c:if test="${not empty successMessage}">
-										    <div class="alert alert-success">${successMessage}</div>
-										</c:if>
-										
-										<!-- Hiển thị thông báo lỗi -->
-										<c:if test="${not empty errorMessage}">
-										    <div class="alert alert-danger">${errorMessage}</div>
-										</c:if>
-                                    
+                                    <!-- Khối chứa thông báo -->
+							        <div id="notification-container">
+							            <!-- Hiển thị thông báo thành công -->
+							            <c:if test="${not empty successMessage}">
+							                <div class="alert alert-success notification">${successMessage}</div>
+							            </c:if>
+							
+							            <!-- Hiển thị thông báo lỗi -->
+							            <c:if test="${not empty errorMessage}">
+							                <div class="alert alert-danger notification">${errorMessage}</div>
+							            </c:if>
+							        </div>
+							        
+                                    <form name="forgetForm" class="forgetForm" action="<c:url value='/authentication/forgotpassword' />" method="POST">                                                                    	                                     
                                         <div class="form-group">
-                                            <input type="email" class="form-control" name="username" placeholder="Email address">
+                                            <input type="email" class="form-control" name="email" placeholder="Email address" required >
                                         </div>
                                         <div class="form-group">
                                             <button class="btn btn-lg btn-primary btn-block" type="submit">Recover your password</button>
@@ -194,17 +214,21 @@
         <!-- ./row -->
     </div>
     <!-- ./container -->
-
-    <!-- Javascript Files -->
-
-    <!-- initialize jQuery Library -->
-    <script src="${URL}login-page-devforum/js/jquery-2.2.4.min.js"></script>
-
-    <!-- for Bootstrap js -->
-    <script src="${URL}login-page-devforum/js/bootstrap.min.js"></script>
-
-    <!-- Custom js-->
-    <script src="${URL}login-page-devforum/js/custom.js"></script>
+    
+    <!-- JavaScript để tự động ẩn thông báo -->
+	<script>
+	    document.addEventListener("DOMContentLoaded", function () {
+	        const notifications = document.querySelectorAll(".notification");
+	        notifications.forEach(notification => {
+	            // Ẩn thông báo sau 5 giây
+	            setTimeout(() => {
+	                notification.style.transition = "opacity 1s";
+	                notification.style.opacity = "0";
+	                setTimeout(() => notification.remove(), 1000); // Xóa hẳn khỏi DOM sau 1 giây
+	            }, 5000);
+	        });
+	    });
+	</script>
 
 </body>
 

@@ -81,7 +81,7 @@ public class AuthenticationController extends HttpServlet {
 
 			// Kiểm tra xem email và password có hợp lệ không
 			if (email.isEmpty() || password.isEmpty()) {
-				req.setAttribute("errorMessage", "Email hoặc mật khẩu không để trống");
+				req.setAttribute("errorMessage", "Email or password cannot be blank");
 				req.getRequestDispatcher("/views/guest/authentication.jsp").forward(req, resp);
 				return;
 			}
@@ -101,7 +101,7 @@ public class AuthenticationController extends HttpServlet {
 
 				resp.sendRedirect(req.getContextPath() + "/waiting");
 			} else {
-				req.setAttribute("errorMessage", "Email hoặc mật khẩu không đúng");
+				req.setAttribute("errorMessage", "Email or password is incorrect");
 				req.getRequestDispatcher("/views/guest/authentication.jsp").forward(req, resp);
 			}
 
@@ -111,7 +111,7 @@ public class AuthenticationController extends HttpServlet {
 			String fullName = req.getParameter("fullname");
 			String password = req.getParameter("password");
 			if (email.isEmpty() || fullName.isEmpty() || password.isEmpty()) {
-				req.setAttribute("errorMessage", "Email, tài khoản hoặc mật khẩu không được để trống");
+				req.setAttribute("errorMessage", "Email, account and password cannot be blank");
 				req.getRequestDispatcher("/views/authentication.jsp").forward(req, resp);
 				return;
 			}
@@ -123,14 +123,14 @@ public class AuthenticationController extends HttpServlet {
 				resp.sendRedirect(req.getContextPath() + "/authentication/login");
 			} else {
 				// Đăng ký không thành công, hiển thị thông báo lỗi
-				req.setAttribute("errorMessage", "Email đã tồn tại hoặc có lỗi xảy ra.");
+				req.setAttribute("errorMessage", "Email already exists or an error has occurred.");
 				req.getRequestDispatcher("/views/authentication.jsp").forward(req, resp);
 			}
 		} else if (url.contains("/forgotpassword")) {
 			String email = req.getParameter("email");
 
 			if (email.isEmpty()) {
-				req.setAttribute("errorMessage", "Vui lòng nhập email.");
+				req.setAttribute("errorMessage", "Please enter email.");
 				req.getRequestDispatcher("/views/guest/authentication.jsp").forward(req, resp);
 				return;
 			}
@@ -142,16 +142,16 @@ public class AuthenticationController extends HttpServlet {
 				// Gọi service để tạo token và gửi email
 				try {
 					userService.sendResetToken(email);
-					req.setAttribute("successMessage", "Email đặt lại mật khẩu đã được gửi.");
+					req.setAttribute("successMessage", "Password reset email has been sent.");
 				} catch (Exception e) {
-					req.setAttribute("errorMessage", "Có lỗi xảy ra trong quá trình gửi email. Vui lòng thử lại.");
+					req.setAttribute("errorMessage", "An error occurred while sending the email. Please try again.");
 				}
 			} else {
-				req.setAttribute("errorMessage", "Không tìm thấy người dùng với email này.");
+				req.setAttribute("errorMessage", "No users found with this email.");
 			}
 
 			// Quay về trang forgot password với thông báo
-			req.getRequestDispatcher("/views/login-page.jsp").forward(req, resp);
+			req.getRequestDispatcher("/views/guest/authentication.jsp").forward(req, resp);
 		}
 
 		else if (url.contains("/logout")) {

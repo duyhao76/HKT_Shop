@@ -14,6 +14,9 @@ public class Constant {
 	//Matching email hợp lệ
 	public static final String EMAIL_REGEX = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
 	
+	// Matching email phân quyền cho user
+	public static final String STUDENT_EMAIL_DOMAIN = "@student.hcmute.edu.vn"; // đăng ký tại khoản bằng loại email này sẽ gán role là admin
+	
 	//Matching các cú pháp tấn công lỗ hỗng bảo mật web
 	// Regex phát hiện các chuỗi độc hại
 	public static final Pattern SQL_INJECTION_PATTERN = Pattern.compile("(['\";]|(?i)(select|insert|update|delete|drop|truncate|union|exec|sp_executesql|xp_cmdshell))");

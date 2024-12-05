@@ -37,13 +37,47 @@ public class EmailService {
 			MimeMessage message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(username));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
-			message.setSubject("TomeKeeper-Khôi phục mật khẩu");
-			message.setText("Để khôi phục mật khẩu của bạn, hãy nhấp vào liên kết sau: "
-					+ "https://localhost:8443/Project_Sach/authentication/reset-password?action=reset&token=" + token);
+			message.setSubject("HKT_SHOP - Recover Your Password");
+
+			// Nội dung email dưới dạng HTML
+			String emailContent = """
+				    <html>
+				    <body style="font-family: Arial, sans-serif; line-height: 1.6;">
+				        <div style="max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+				            <h2 style="color: #2C3E50; text-align: center;">HKT_SHOP</h2>
+				            <p>Dear <b>Customer</b>,</p>
+				            <p>You recently requested to reset your password for your HKT_SHOP account.</p>
+				            <p>
+				                To recover your password, click the button below and set a new password:
+				            </p>
+				            <div style="text-align: center; margin: 20px 0;">
+				                <a href="https://localhost:8443/HKT_SHOP/authentication/reset-password?action=reset&token=""" + token + """
+				                " style="background-color: #3498DB; color: white; text-decoration: none; padding: 10px 20px; border-radius: 5px; display: inline-block;">
+				                    Reset Password
+				                </a>
+				            </div>
+				            <p>If you did not request this, you can safely ignore this email.</p>
+				            <p>Thank you,<br>The HKT_SHOP Team</p>
+				            <hr style="margin-top: 30px;"/>
+				            <p style="font-size: 12px; color: #7F8C8D;">
+				                If you’re having trouble clicking the button, copy and paste the URL below into your web browser:
+				                <br>
+				                <a href="https://localhost:8443/HKT_SHOP/authentication/reset-password?action=reset&token=""" + token + """
+				                ">https://localhost:8443/HKT_SHOP/authentication/reset-password?action=reset&token=""" + token + """ 
+				                </a>
+				            </p>
+				        </div>
+				    </body>
+				    </html>
+				    """;
+
+			// Thiết lập email dưới dạng HTML
+			message.setContent(emailContent, "text/html; charset=UTF-8");
 
 			// Gửi email
 			Transport.send(message);
 			System.out.println("Email đã được gửi thành công");
+
 
 		} catch (MessagingException e) {
 			System.err.println("Lỗi khi gửi email: " + e.getMessage());
