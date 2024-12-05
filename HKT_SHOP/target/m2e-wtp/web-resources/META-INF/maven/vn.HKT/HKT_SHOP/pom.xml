@@ -144,6 +144,14 @@
 			<version>2.0.1</version>
 		</dependency>
 
+		<!--Thư viện đọc file .env-->
+		<dependency>
+			<groupId>io.github.cdimascio</groupId>
+			<artifactId>dotenv-java</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
@@ -171,6 +179,15 @@
 
 			</plugins>
 		</pluginManagement>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>*.env</include>
+				</includes>
+			</resource>
+		</resources>
 
 	</build>
 

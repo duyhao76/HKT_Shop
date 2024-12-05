@@ -10,6 +10,9 @@ import vn.HKT.entities.Users;
 import vn.HKT.services.IUserService;
 import vn.HKT.services.Impl.UserServiceImpl;
 import org.json.JSONObject;
+
+import io.github.cdimascio.dotenv.Dotenv;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -22,11 +25,14 @@ import java.net.URL;
 public class FacebookAuthServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	private static final String CLIENT_ID = "575064428819129"; // Thay thế bằng App ID 
-	private static final String CLIENT_SECRET = "37addee020549828b9eb5115edbb25da"; // Thay thế bằng App Secret 
-	private static final String REDIRECT_URI = "https://localhost:8443/HKT_SHOP/authentication/auth/facebook";
-
-	IUserService userService = new UserServiceImpl();
+    private static final Dotenv dotenv = Dotenv.configure()
+    	    .directory("/")
+    	    .filename("Client_Secret.env")
+    	    .load();
+    private static final String CLIENT_ID = dotenv.get("FACEBOOK_CLIENT_ID");
+    private static final String CLIENT_SECRET = dotenv.get("FACEBOOK_CLIENT_SECRET");
+    private static final String REDIRECT_URI = "https://localhost:8443/HKT_SHOP/authentication/auth/facebook";
+    private final IUserService userService = new UserServiceImpl();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

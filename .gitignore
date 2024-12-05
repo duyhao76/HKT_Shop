@@ -2,4 +2,6 @@
 Servers/
 Tài liệu/
 keystore.jks
+Client_Secret.env
+.env
 
