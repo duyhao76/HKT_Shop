@@ -17,24 +17,24 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
-    
+
     @Column(nullable = false, unique = true, length = 50)
     private String username;
-    
+
     @Column(nullable = false)
     private String password;
-    
+
     @Column(unique = true, length = 100)
     private String email;
-    
+
     @ManyToOne
     @JoinColumn(name = "roleId")
     private Roles role;
-    
+
     @Column(nullable = false, updatable = false)
     @Builder.Default
     private LocalDateTime createdDate = LocalDateTime.now(); // Thời gian tạo mặc định
-    
+
     @Column
     @Builder.Default
     private LocalDateTime lastLogin = LocalDateTime.now(); // Thời gian đăng nhập mặc định
@@ -59,7 +59,6 @@ public class Users {
             role = em.find(Roles.class, 1L); // Lấy role với ID = 1 từ DB
         }
     }
-
 
     @PreUpdate
     protected void onUpdate() {

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .metadata/
 Servers/
 Tài liệu/
@@ -5,3 +6,6 @@ keystore.jks
 Client_Secret.env
 .env
 
+=======
+.metadata/
+>>>>>>> 38706248e47126a0c6adc0089133bf936a50f6b0
