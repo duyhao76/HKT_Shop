@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 .metadata/
 Servers/
 Tài liệu/
@@ -9,3 +10,10 @@ Client_Secret.env
 =======
 .metadata/
 >>>>>>> 38706248e47126a0c6adc0089133bf936a50f6b0
+=======
+.metadata/
+keystore.jks
+Servers/
+.classpath/
+HKT_SHOP/target/m2e-wtp/web-resources/META-INF/maven/vn.HKT/HKT_SHOP/pom.properties
+>>>>>>> ec24fa02aacda4097bceb98558282f2d0c5acc23

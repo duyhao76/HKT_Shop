@@ -21,6 +21,9 @@ public class Categories {
     @Column(length = 200)
     private String description;
     
+    @Column(nullable = false, columnDefinition = "bit default 1")
+    private Boolean isActive;
+    
     @OneToMany(mappedBy = "category")
     private List<Products> products;
 }

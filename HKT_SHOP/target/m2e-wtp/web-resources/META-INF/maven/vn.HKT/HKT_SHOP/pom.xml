@@ -99,7 +99,6 @@
 			<scope>provided</scope>
 		</dependency>
 
-<<<<<<< HEAD
 		<!--Bộ thư viện đăng nhập với google-->
 		<dependency>
 			<groupId>com.google.api-client</groupId>
@@ -153,8 +152,6 @@
 		</dependency>
 
 
-=======
->>>>>>> 38706248e47126a0c6adc0089133bf936a50f6b0
 	</dependencies>
 
 	<build>
@@ -183,7 +180,6 @@
 			</plugins>
 		</pluginManagement>
 
-<<<<<<< HEAD
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -193,8 +189,6 @@
 			</resource>
 		</resources>
 
-=======
->>>>>>> 38706248e47126a0c6adc0089133bf936a50f6b0
 	</build>
 
 

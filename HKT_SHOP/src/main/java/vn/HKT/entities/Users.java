@@ -1,5 +1,6 @@
 package vn.HKT.entities;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -33,11 +34,11 @@ public class Users {
 
     @Column(nullable = false, updatable = false)
     @Builder.Default
-    private LocalDateTime createdDate = LocalDateTime.now(); // Thời gian tạo mặc định
+    private LocalDate createdDate = LocalDate.now(); // Thời gian tạo mặc định
 
     @Column
     @Builder.Default
-    private LocalDateTime lastLogin = LocalDateTime.now(); // Thời gian đăng nhập mặc định
+    private LocalDate lastLogin = LocalDate.now(); // Thời gian đăng nhập mặc định
 
     @Column
     private String token;
@@ -53,7 +54,7 @@ public class Users {
 
     @PrePersist
     protected void onCreate() {
-        createdDate = LocalDateTime.now(); // Gán thời gian tạo khi insert
+        createdDate = LocalDate.now(); // Gán thời gian tạo khi insert
         if (role == null) { // Nếu role chưa được chỉ định
             EntityManager em = Persistence.createEntityManagerFactory("HKT_PU").createEntityManager();
             role = em.find(Roles.class, 1L); // Lấy role với ID = 1 từ DB
@@ -62,6 +63,6 @@ public class Users {
 
     @PreUpdate
     protected void onUpdate() {
-        lastLogin = LocalDateTime.now(); // Cập nhật thời gian đăng nhập khi có update
+        lastLogin = LocalDate.now(); // Cập nhật thời gian đăng nhập khi có update
     }
 }

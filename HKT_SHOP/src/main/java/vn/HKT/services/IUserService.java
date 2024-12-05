@@ -11,7 +11,7 @@ public interface IUserService {
 	boolean register(String email, String fullName, String password);
 
 	Users FindByEmail(String email);
-	
+
 	void sendResetToken(String email);
 
 	void updatePasswordByToken(String newPassword, String resetToken) throws SQLException;

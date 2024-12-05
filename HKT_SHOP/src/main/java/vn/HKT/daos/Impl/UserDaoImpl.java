@@ -141,35 +141,36 @@ public class UserDaoImpl implements IUserDao {
 			}
 		}
 	}
-	
+
 	public static void main(String[] args) {
-	    UserDaoImpl userDao = new UserDaoImpl();
+		UserDaoImpl userDao = new UserDaoImpl();
 
-	    // Thêm user mới
-	    Users user = Users.builder()
-	            .username("johndoe")
-	            .password("password123")
-	            .email("john.doe@example.com")
-	            .build();
-	    userDao.insert(user);
+		// Thêm user mới
+		Users user = Users.builder()
+				.username("johndoe")
+				.password("password123")
+				.email("john.doe@example.com")
+				.build();
+		userDao.insert(user);
 
-	    // Tìm user theo username
-	    Users foundUser = userDao.findByUserName("johndoe");
-	    System.out.println(foundUser);
+		// Tìm user theo username
+		Users foundUser = userDao.findByUserName("johndoe");
+		System.out.println(foundUser);
 
-	    // Cập nhật mật khẩu qua email
-	    foundUser.setPassword("newpassword");
-	    userDao.updatePasswordByEmail(foundUser);
+		// Cập nhật mật khẩu qua email
+		foundUser.setPassword("newpassword");
+		userDao.updatePasswordByEmail(foundUser);
 
-//	    // Cập nhật token reset mật khẩu
-//	    userDao.updateResetToken("john.doe@example.com", "reset-token-123", Timestamp.valueOf(LocalDateTime.now().plusHours(1)));
-//
-//	    // Kiểm tra token reset hợp lệ
-//	    boolean isValid = userDao.isResetTokenValid("reset-token-123");
-//	    System.out.println("Token hợp lệ: " + isValid);
-//
-//	    // Đổi mật khẩu bằng token
-//	    userDao.updatePasswordByToken("reset-token-123", "new-secure-password");
+		// // Cập nhật token reset mật khẩu
+		// userDao.updateResetToken("john.doe@example.com", "reset-token-123",
+		// Timestamp.valueOf(LocalDateTime.now().plusHours(1)));
+		//
+		// // Kiểm tra token reset hợp lệ
+		// boolean isValid = userDao.isResetTokenValid("reset-token-123");
+		// System.out.println("Token hợp lệ: " + isValid);
+		//
+		// // Đổi mật khẩu bằng token
+		// userDao.updatePasswordByToken("reset-token-123", "new-secure-password");
 	}
 
 }
