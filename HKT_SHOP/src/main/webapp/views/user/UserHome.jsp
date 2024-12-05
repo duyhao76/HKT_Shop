@@ -16,7 +16,7 @@
                         <ul>
                             <!-- Lặp qua danh sách các danh mục từ request -->
 					        <c:forEach var="category" items="${categoryList}">
-					            <li><a href="#">${category.categoryName}</a></li>
+					            <li><a href="${pageContext.request.contextPath }/user/category?categoryId=${category.categoryId}">${category.categoryName}</a></li>
 					        </c:forEach>
                         </ul>
                     </div>
