@@ -1,7 +1,7 @@
 package vn.HKT.entities;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,7 +31,7 @@ public class Inventory {
     private BigDecimal unitPrice;
     
     @Column
-    private LocalDateTime importDate;
+    private LocalDate importDate;
     
     @Column(length = 200)
     private String note;

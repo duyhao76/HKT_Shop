@@ -1,6 +1,6 @@
 package vn.HKT.entities;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -11,8 +11,10 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Users {
-	@Id
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     
@@ -29,15 +31,33 @@ public class Users {
     @JoinColumn(name = "roleId")
     private Roles role;
     
-    @Column
-    private LocalDateTime createdDate;
+    @Column(nullable = false, updatable = false)
+    @Builder.Default
+    private LocalDate createdDate = LocalDate.now(); // Thời gian tạo mặc định
     
     @Column
-    private LocalDateTime lastLogin;
-    
+    @Builder.Default
+    private LocalDate lastLogin = LocalDate.now(); // Thời gian đăng nhập mặc định
+
+    @Column
+    private String token;
+
+    @Column
+    private LocalDate expiry;
+
     @OneToMany(mappedBy = "user")
     private List<Orders> orders;
-    
+
     @OneToMany(mappedBy = "user")
     private List<Inventory> inventoryRecords;
+
+    @PrePersist
+    protected void onCreate() {
+        createdDate = LocalDate.now(); // Gán thời gian tạo khi insert
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        lastLogin = LocalDate.now(); // Cập nhật thời gian đăng nhập khi có update
+    }
 }
