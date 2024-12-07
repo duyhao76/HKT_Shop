@@ -21,8 +21,11 @@ public class Categories {
     @Column(length = 200)
     private String description;
     
-    @Column(nullable = false, columnDefinition = "boolean default true")
+    @Column(nullable = false, columnDefinition = "bit default 1")
     private Boolean isActive;
+    
+    @Column(columnDefinition = "nvarchar(max)")
+    private String imgPath;
     
     @OneToMany(mappedBy = "category")
     private List<Products> products;

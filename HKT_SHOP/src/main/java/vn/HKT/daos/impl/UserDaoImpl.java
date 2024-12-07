@@ -1,4 +1,4 @@
-package vn.HKT.daos.Impl;
+package vn.HKT.daos.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

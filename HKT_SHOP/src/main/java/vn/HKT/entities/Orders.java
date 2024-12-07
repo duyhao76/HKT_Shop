@@ -41,4 +41,7 @@ public class Orders {
     
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderDetails> orderDetails;
+    
+    @Transient
+    private String username;
 }

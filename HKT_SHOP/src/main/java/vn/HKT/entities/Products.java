@@ -39,7 +39,7 @@ public class Products {
     @Column
     private LocalDate createdDate;
     
-    @Column(nullable = false, columnDefinition = "boolean default true")
+    @Column(nullable = false, columnDefinition = "bit default 1")
     private Boolean isActive;
     
     @Column(columnDefinition = "nvarchar(max)")
@@ -50,5 +50,4 @@ public class Products {
     
     @OneToMany(mappedBy = "product")
     private List<Inventory> inventoryRecords;
-    
 }

@@ -1,7 +1,7 @@
-package vn.HKT.services.Impl;
+package vn.HKT.services.impl;
 
 import vn.HKT.daos.IUserDao;
-import vn.HKT.daos.Impl.UserDaoImpl;
+import vn.HKT.daos.impl.UserDaoImpl;
 import vn.HKT.entities.Users;
 import vn.HKT.services.IUserService;
 import vn.HKT.utils.HashPasswordUtils;
