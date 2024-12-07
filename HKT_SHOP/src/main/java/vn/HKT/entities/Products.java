@@ -50,5 +50,4 @@ public class Products {
     
     @OneToMany(mappedBy = "product")
     private List<Inventory> inventoryRecords;
-    
 }

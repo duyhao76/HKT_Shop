@@ -29,4 +29,7 @@ public class OrderDetails {
     
     @Column(nullable = false)
     private BigDecimal unitPrice;
+    
+    @Transient
+    private String productname;
 }

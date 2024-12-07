@@ -146,11 +146,7 @@ public class UserDaoImpl implements IUserDao {
 		UserDaoImpl userDao = new UserDaoImpl();
 
 		// Thêm user mới
-		Users user = Users.builder()
-				.username("johndoe")
-				.password("password123")
-				.email("john.doe@example.com")
-				.build();
+		Users user = Users.builder().username("johndoe").password("password123").email("john.doe@example.com").build();
 		userDao.insert(user);
 
 		// Tìm user theo username
