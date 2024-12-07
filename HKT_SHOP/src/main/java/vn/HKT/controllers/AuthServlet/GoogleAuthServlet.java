@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import vn.HKT.entities.Users;
 import vn.HKT.services.IUserService;
-import vn.HKT.services.Impl.UserServiceImpl;
+import vn.HKT.services.impl.UserServiceImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;

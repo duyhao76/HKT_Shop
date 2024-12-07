@@ -1,4 +1,4 @@
-package vn.HKT.services.Impl;
+package vn.HKT.services.impl;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -8,8 +8,8 @@ import java.util.UUID;
 
 import vn.HKT.daos.IRoleDao;
 import vn.HKT.daos.IUserDao;
-import vn.HKT.daos.Impl.RoleDaoImpl;
-import vn.HKT.daos.Impl.UserDaoImpl;
+import vn.HKT.daos.impl.RoleDaoImpl;
+import vn.HKT.daos.impl.UserDaoImpl;
 import vn.HKT.entities.Roles;
 import vn.HKT.entities.Users;
 import vn.HKT.services.IUserService;

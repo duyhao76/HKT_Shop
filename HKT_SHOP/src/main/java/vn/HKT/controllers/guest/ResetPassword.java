@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import vn.HKT.services.IUserService;
-import vn.HKT.services.Impl.UserServiceImpl;
+import vn.HKT.services.impl.UserServiceImpl;
 
 @WebServlet(urlPatterns = { "/authentication/reset-password", "/authentication/create-password" })
 public class ResetPassword extends HttpServlet {

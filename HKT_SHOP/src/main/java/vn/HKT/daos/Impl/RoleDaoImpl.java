@@ -1,4 +1,4 @@
-package vn.HKT.daos.Impl;
+package vn.HKT.daos.impl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
