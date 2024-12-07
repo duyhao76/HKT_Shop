@@ -3,3 +3,5 @@ keystore.jks
 Servers/
 .classpath/
 HKT_SHOP/target/m2e-wtp/web-resources/META-INF/maven/vn.HKT/HKT_SHOP/pom.properties
+HKT_SHOP/.classpath
+HKT_SHOP/.settings/org.eclipse.wst.common.component
