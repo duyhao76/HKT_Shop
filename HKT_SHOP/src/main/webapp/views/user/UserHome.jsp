@@ -24,8 +24,8 @@
                 <div class="col-lg-9">
                     <div class="hero__search">
                         <div class="hero__search__form">
-                            <form action="#">
-                                <input type="text" placeholder="What do yo u need?">
+                            <form action="${pageContext.request.contextPath }/user/search" method="GET">
+                                <input type="text" name="keyword" placeholder="What do you need?">
                                 <button type="submit" class="site-btn">SEARCH</button>
                             </form>
                         </div>
@@ -109,13 +109,24 @@
             <c:forEach var="product" items="${productList}">
                 <div class="col-lg-3 col-md-4 col-sm-6 mix ${product.category.categoryName}">
                     <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="${URL}ogani-master/img/featured/feature-1.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
+                        <div class="featured__item__pic set-bg">
+                    <!-- Kiểm tra nếu đường dẫn ảnh là URL (https) -->
+                    <c:if test="${product.imgPath != null && product.imgPath.startsWith('https')}">
+                        <img src="${product.imgPath}" alt="${product.productName}" style="width: 100%; height: auto;" />
+                    </c:if>
+                    
+                    <!-- Kiểm tra nếu đường dẫn ảnh là đường dẫn cục bộ -->
+                    <c:if test="${product.imgPath != null && !product.imgPath.startsWith('https')}">
+                        <c:url value="/image?fname=${product.imgPath}" var="imgUrl" />
+                        <img src="${imgUrl}" alt="${product.productName}" style="width: 100%; height: auto;" />
+                    </c:if>
+
+                    <ul class="featured__item__pic__hover">
+                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                    </ul>
+                </div>
                         <div class="featured__item__text">
                             <h6><a href="#">${product.productName}</a></h6>
                             <h5>${product.unitPrice} VNĐ</h5>

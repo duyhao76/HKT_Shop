@@ -3,7 +3,7 @@
 <%@ include file="/commons/taglib.jsp"%>
 <c:url value="/" var="URL"></c:url>
 <!DOCTYPE html>
-   <!-- Hero Section Begin -->
+<!-- Hero Section Begin -->
     <section class="hero hero-normal">
         <div class="container">
             <div class="row">
@@ -14,26 +14,18 @@
                             <span>All Category</span>
                         </div>
                         <ul>
-                            <li><a href="#">Fresh Meat</a></li>
-                            <li><a href="#">Vegetables</a></li>
-                            <li><a href="#">Fruit & Nut Gifts</a></li>
-                            <li><a href="#">Fresh Berries</a></li>
-                            <li><a href="#">Ocean Foods</a></li>
-                            <li><a href="#">Butter & Eggs</a></li>
-                            <li><a href="#">Fastfood</a></li>
-                            <li><a href="#">Fresh Onion</a></li>
-                            <li><a href="#">Papayaya & Crisps</a></li>
-                            <li><a href="#">Oatmeal</a></li>
-                            <li><a href="#">Fresh Bananas</a></li>
+                            <!-- Lặp qua danh sách các danh mục từ request -->
+					        <c:forEach var="category" items="${categoryList}">
+					            <li><a href="${pageContext.request.contextPath }/user/category?categoryId=${category.categoryId}">${category.categoryName}</a></li>
+					        </c:forEach>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-9">
                     <div class="hero__search">
                         <div class="hero__search__form">
-                            <form action="#">
-                                
-                                <input type="text" placeholder="What do yo u need?">
+                            <form action="${pageContext.request.contextPath }/user/search" method="GET">
+                                <input type="text" name="keyword" placeholder="What do you need?">
                                 <button type="submit" class="site-btn">SEARCH</button>
                             </form>
                         </div>
@@ -80,17 +72,11 @@
                         <div class="sidebar__item">
                             <h4>Department</h4>
                             <ul>
-                                <li><a href="#">Fresh Meat</a></li>
-                                <li><a href="#">Vegetables</a></li>
-                                <li><a href="#">Fruit & Nut Gifts</a></li>
-                                <li><a href="#">Fresh Berries</a></li>
-                                <li><a href="#">Ocean Foods</a></li>
-                                <li><a href="#">Butter & Eggs</a></li>
-                                <li><a href="#">Fastfood</a></li>
-                                <li><a href="#">Fresh Onion</a></li>
-                                <li><a href="#">Papayaya & Crisps</a></li>
-                                <li><a href="#">Oatmeal</a></li>
-                            </ul>
+                            <!-- Lặp qua danh sách các danh mục từ request -->
+					        <c:forEach var="category" items="${categoryList}">
+					            <li><a href="${pageContext.request.contextPath }/user/category?categoryId=${category.categoryId}">${category.categoryName}</a></li>
+					        </c:forEach>
+                        </ul>
                         </div>
                         <div class="sidebar__item">
                             <h4>Price</h4>
