@@ -1,6 +1,9 @@
 .metadata/
-keystore.jks
 Servers/
+Tài liệu/
+keystore.jks
+Client_Secret.env
+.env
 .classpath/
 HKT_SHOP/target/m2e-wtp/web-resources/META-INF/maven/vn.HKT/HKT_SHOP/pom.properties
 HKT_SHOP/.classpath
