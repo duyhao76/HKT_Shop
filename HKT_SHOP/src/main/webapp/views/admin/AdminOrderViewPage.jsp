@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <body>
@@ -35,6 +36,12 @@
                                 <label class="labels">Total price</label>
                                 <input type="text" class="form-control" id="totalAlmount" name="totalAlmount" value = "${order.totalAmount}" readonly placeholder="Total price">
                             </div>
+                        </div>
+                        <div class="row mt-4">
+                        	<div class="col-md-12">
+	                        	<label class="labels">Created date</label>
+	                        	<input type="date" class="form-control" id="orderDate" name="orderDate" value = "${order.orderDate}">                       	
+                        	</div>
                         </div>
                         <div class="row mt-4">
                             <div class="col-md-12">

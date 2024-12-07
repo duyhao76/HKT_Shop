@@ -23,27 +23,45 @@ public class OrderDetailDaoImpl implements IOrderDetailDao{
 	public List<OrderDetails> findOrderDetailsById(String id) {
 		EntityManager enma = JPAConfig.getEntityManager();
 		
-		String jpql = "SELECT od, p.productName " +
-	              "FROM OrderDetails od " +
-	              "JOIN od.product p " +
-	              "WHERE od.order.orderId = :orderId";
+		String jpql = "SELECT new OrderDetails(od.id, od.quantity, od.unitPrice, p.productName) " +
+                "FROM OrderDetails od " +
+                "JOIN od.product p " +
+                "WHERE od.order.orderId = :orderId";
 		
-		TypedQuery<Object[]> query = enma.createQuery(jpql, Object[].class);
+		TypedQuery<OrderDetails> query = enma.createQuery(jpql, OrderDetails.class);
 		query.setParameter("orderId", id);
 		
-		List<Object[]> results = query.getResultList();
-		List<OrderDetails> list = new ArrayList<>();
-		
-		for (Object[] result : results) {
-			OrderDetails orderDetail = (OrderDetails) result[0];
-			String productName = (String) result[1];
-			
-			orderDetail.setProductname(productName);
-			orderDetail.setOrder(null);
-			
-			list.add(orderDetail);
-		}
-		return list;
+		return query.getResultList();
 	}
+	
+	public static void main(String[] args) {
+		IOrderDetailDao orderDetailsDAO = new OrderDetailDaoImpl();
 
+        try {
+            // Gọi hàm với một orderId cụ thể (thay "1" bằng orderId thực tế trong database của bạn)
+            String orderId = "4";
+            List<OrderDetails> orderDetails = orderDetailsDAO.findOrderDetailsById(orderId);
+
+            // In kết quả
+            System.out.println("Danh sách OrderDetails cho Order ID: " + orderId);
+            for (OrderDetails detail : orderDetails) {
+                System.out.println("Product Name: " + detail.getProductname());
+                System.out.println("Quantity: " + detail.getQuantity());
+                System.out.println("Unit Price: " + detail.getUnitPrice());
+                System.out.println("------------------------");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Có lỗi xảy ra: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            // Đóng EntityManager nếu cần
+            // Nên đóng trong một phương thức riêng hoặc sử dụng try-with-resources
+            try {
+                JPAConfig.getEntityManager().close();
+            } catch (Exception e) {
+                System.out.println("Lỗi khi đóng EntityManager: " + e.getMessage());
+            }
+        }
+	}
 }
