@@ -2,11 +2,16 @@
 
 <sitemesh>
 
-	<mapping path="/admin/*" decorator="admin.jsp" />
-	<mapping path="/vendor/*" decorator="vendor.jsp" />
-	<mapping path="/shipper/*" decorator="shipper.jsp" />
-	<mapping path="/user/*" decorator="user.jsp" />
-	<mapping path="/*" decorator="guest.jsp" />
-	<mapping path="/api*" exclude="true" />
-	
+<mapping decorator="admin.jsp" path="/admin/*"/>
+
+<mapping decorator="vendor.jsp" path="/vendor/*"/>
+
+<mapping decorator="shipper.jsp" path="/shipper/*"/>
+
+<mapping decorator="user.jsp" path="/user/*"/>
+
+<mapping decorator="guest.jsp" path="/*"/>
+
+<mapping path="/api*" exclude="true"/>
+
 </sitemesh>
