@@ -97,9 +97,6 @@
 			<artifactId>lombok</artifactId>
 			<version>1.18.34</version>
 			<scope>provided</scope>
-<<<<<<< HEAD
-		</dependency>		
-=======
 		</dependency>
 
 		<!--Bộ thư viện đăng nhập với google-->
@@ -178,7 +175,6 @@
 		</dependency>
 
 
->>>>>>> 7b62ae0c32512e6a5b0ce8cf03609ca7a800eae3
 	</dependencies>
 
 	<build>
