@@ -53,31 +53,22 @@
         <div class="container">
             <div class="row">
                 <div class="categories__slider owl-carousel">
+                <c:forEach var="category" items="${categoryList}">
                     <div class="col-lg-3">
-                        <div class="categories__item set-bg" data-setbg="${URL}ogani-master/img/categories/cat-1.jpg">
-                            <h5><a href="#">Fresh Fruit</a></h5>
+                        <div class="categories__item set-bg">
+                        	<!-- Kiểm tra nếu đường dẫn ảnh là URL (https) -->
+		                    <c:if test="${category.imgPath != null && category.imgPath.startsWith('https')}">
+		                        	<img src="${category.imgPath}" alt="${category.categoryName}" style="width: 100%; height: auto;" />
+		                    </c:if>
+		                    <!-- Kiểm tra nếu đường dẫn ảnh là đường dẫn cục bộ -->
+		                    <c:if test="${category.imgPath != null && !category.imgPath.startsWith('https')}">
+		                        <c:url value="/image?fname=${category.imgPath}" var="imgUrl" />
+		                        <img src="${imgUrl}" alt="${category.categoryName}" style="width: 100%; height: auto;" />
+		                    </c:if>
+                            <h5><a href="${pageContext.request.contextPath}/user/category?categoryId=${category.categoryId}">${category.categoryName}</a></h5>
                         </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="categories__item set-bg" data-setbg="${URL}ogani-master/img/categories/cat-2.jpg">
-                            <h5><a href="#">Dried Fruit</a></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="categories__item set-bg" data-setbg="${URL}ogani-master/img/categories/cat-3.jpg">
-                            <h5><a href="#">Vegetables</a></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="categories__item set-bg" data-setbg="${URL}ogani-master/img/categories/cat-4.jpg">
-                            <h5><a href="#">drink fruits</a></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="categories__item set-bg" data-setbg="${URL}ogani-master/img/categories/cat-5.jpg">
-                            <h5><a href="#">drink fruits</a></h5>
-                        </div>
-                    </div>
+                    </div> 
+                </c:forEach> 
                 </div>
             </div>
         </div>
@@ -90,7 +81,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="section-title">
-                    <h2>Featured Product</h2>
+                    <h2>Product</h2>
                 </div>
                 <div class="featured__controls">
                     <ul>
@@ -112,13 +103,17 @@
                         <div class="featured__item__pic set-bg">
                     <!-- Kiểm tra nếu đường dẫn ảnh là URL (https) -->
                     <c:if test="${product.imgPath != null && product.imgPath.startsWith('https')}">
-                        <img src="${product.imgPath}" alt="${product.productName}" style="width: 100%; height: auto;" />
+                    	<a href="${pageContext.request.contextPath }/user/detail?productId=${product.productId}">
+                        	<img src="${product.imgPath}" alt="${product.productName}" style="width: 100%; height: auto;" />
+                        </a>
                     </c:if>
                     
                     <!-- Kiểm tra nếu đường dẫn ảnh là đường dẫn cục bộ -->
                     <c:if test="${product.imgPath != null && !product.imgPath.startsWith('https')}">
                         <c:url value="/image?fname=${product.imgPath}" var="imgUrl" />
+                        <a href="${pageContext.request.contextPath }/user/detail?productId=${product.productId}">
                         <img src="${imgUrl}" alt="${product.productName}" style="width: 100%; height: auto;" />
+                        </a>
                     </c:if>
 
                     <ul class="featured__item__pic__hover">

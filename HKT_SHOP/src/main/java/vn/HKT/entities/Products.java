@@ -51,4 +51,8 @@ public class Products {
     @OneToMany(mappedBy = "product")
     private List<Inventory> inventoryRecords;
     
+    public BigDecimal getPrice() {
+        return unitPrice;
+    }
+
 }

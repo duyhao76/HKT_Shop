@@ -5,4 +5,6 @@ import vn.HKT.entities.Categories;
 
 public interface ICategoryDao {
 	List<Categories> findAll();
+
+	Categories findById(Long categoryId);
 }
