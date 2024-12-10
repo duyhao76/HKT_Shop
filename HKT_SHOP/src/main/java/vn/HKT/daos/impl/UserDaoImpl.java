@@ -2,6 +2,7 @@ package vn.HKT.daos.impl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import vn.HKT.configs.JPAConfig;
 import vn.HKT.daos.IUserDao;
@@ -9,6 +10,7 @@ import vn.HKT.entities.Users;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class UserDaoImpl implements IUserDao {
 
@@ -169,4 +171,36 @@ public class UserDaoImpl implements IUserDao {
 		// userDao.updatePasswordByToken("reset-token-123", "new-secure-password");
 	}
 
+	@Override
+	public List<Users> findAllUsers() {
+		EntityManager enma = JPAConfig.getEntityManager();
+		String jpql = "SELECT u FROM Users u JOIN FETCH u.role";
+		TypedQuery<Users> query = enma.createQuery(jpql, Users.class);
+		return query.getResultList();
+	}
+
+	@Override
+	public Users findUserById(String id) {
+		EntityManager enma = JPAConfig.getEntityManager();
+		String jpql = "SELECT u FROM Users u JOIN FETCH u.role WHERE u.userId = :userId";
+		TypedQuery<Users> query = enma.createQuery(jpql, Users.class);
+		query.setParameter("userId", id);
+		return query.getSingleResult();
+	}
+
+	@Override
+	public void editUserRoleById(String role, String id) {
+		EntityManager enma = JPAConfig.getEntityManager();
+		enma.getTransaction().begin();
+		
+		String jpql = "UPDATE Users u SET u.role.roleId = :roleId WHERE u.userId = :userId";
+		
+		Query query = enma.createQuery(jpql);
+		query.setParameter("roleId", role);
+        query.setParameter("userId", id);
+        query.executeUpdate();
+        
+        enma.getTransaction().commit();
+	    enma.close();
+	}
 }

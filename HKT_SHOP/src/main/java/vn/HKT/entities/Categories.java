@@ -29,4 +29,12 @@ public class Categories {
     
     @OneToMany(mappedBy = "category")
     private List<Products> products;
+    
+    public Categories(Long categoryId, String categoryName, String description, Boolean isActive, String imgPath) {
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.description = description;
+        this.isActive = isActive;
+        this.imgPath = imgPath;
+    }
 }

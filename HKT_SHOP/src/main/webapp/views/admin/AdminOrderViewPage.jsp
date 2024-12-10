@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri= "http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <body>
@@ -26,14 +27,28 @@
                             <div class="col-md-6">
                                 <label class="labels">Payment Method</label>
                                 <select class="form-control" name="paymentMethod" id="paymentMethod">
-                                    <option value="" disabled selected>Choose payment method</option>
-                                    <option value="1">Cash</option>
-                                    <option value="2">ATM</option>
-                                </select>
+    								<option value="" disabled>Choose payment method</option>
+				    				<option value="Cash" ${order.paymentMethod == 'Cash' ? 'selected' : ''}>Cash</option>
+								    <option value="ATM" ${order.paymentMethod == 'ATM' ? 'selected' : ''}>ATM</option>
+								</select>
                             </div>
                             <div class="col-md-6">
                                 <label class="labels">Total price</label>
                                 <input type="text" class="form-control" id="totalAlmount" name="totalAlmount" value = "${order.totalAmount}" readonly placeholder="Total price">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <label class="labels">Status</label>
+                                <select class="form-control" name="status" id="status">
+								    <option value="" disabled>Choose status</option>
+								    <option value="Pending" ${order.status == 'Pending' ? 'selected' : ''}>Pending</option>
+								    <option value="Complete" ${order.status == 'Complete' ? 'selected' : ''}>Complete</option>
+								</select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="labels">Created date</label>
+                                <input type="date" class="form-control" id="orderDate" name="orderDate" value = "${order.orderDate}" readonly placeholder="Total price">
                             </div>
                         </div>
                         <div class="row mt-4">
@@ -61,7 +76,7 @@
                         </div>
                         <div class="mt-5 text-center">
                             <button type="submit" class="btn btn-primary profile-button">Save</button>
-                            <a href="dashboard.jsp" class="btn btn-secondary profile-button ml-3">Exit</a>
+                            <a href="/HKT_SHOP/admin/dashboard" class="btn btn-secondary profile-button ml-3">Exit</a>
                         </div>
                     </form>
                 </div>

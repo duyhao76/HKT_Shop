@@ -3,6 +3,7 @@ package vn.HKT.services.impl;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -140,5 +141,21 @@ public class UserServiceImpl implements IUserService {
 		}
 		return false;
 	}
+
+	@Override
+	public List<Users> findAllUsers() {
+		return userDao.findAllUsers();
+	}
+
+	@Override
+	public Users findUserById(String id) {
+		return userDao.findUserById(id);
+	}
+
+	@Override
+	public void editUserRoleById(String role, String id) {
+		userDao.editUserRoleById(role, id);
+	}
+	
 
 }

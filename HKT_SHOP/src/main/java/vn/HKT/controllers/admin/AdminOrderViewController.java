@@ -15,7 +15,7 @@ import vn.HKT.services.IOrderService;
 import vn.HKT.services.impl.OrderDetailService;
 import vn.HKT.services.impl.OrderServiceImpl;
 
-@WebServlet (urlPatterns = {"/admin/orders"})
+@WebServlet (urlPatterns = {"/admin/orders", "/admin/order/edit"})
 public class AdminOrderViewController extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
@@ -41,7 +41,15 @@ public class AdminOrderViewController extends HttpServlet{
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.doPost(req, resp);
+		String url = req.getRequestURI();
+		
+		if (url.contains("/admin/order/edit")) {
+			String id = req.getParameter("orderId");
+			String status = req.getParameter("status");
+			
+			orderService.editStatusOrderById(status, id);
+			req.getSession().setAttribute("successMessage", "Đã sửa thành công!!!");
+			resp.sendRedirect(req.getContextPath() + "/admin/dashboard");
+		}
 	}
 }

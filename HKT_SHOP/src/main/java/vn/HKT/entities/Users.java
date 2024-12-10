@@ -49,9 +49,6 @@ public class Users {
     @OneToMany(mappedBy = "user")
     private List<Orders> orders;
 
-    @OneToMany(mappedBy = "user")
-    private List<Inventory> inventoryRecords;
-
     @PrePersist
     protected void onCreate() {
         createdDate = LocalDate.now(); // Gán thời gian tạo khi insert

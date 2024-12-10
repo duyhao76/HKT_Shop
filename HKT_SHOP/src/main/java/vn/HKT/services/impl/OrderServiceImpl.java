@@ -21,4 +21,9 @@ public class OrderServiceImpl implements IOrderService{
 		return orderDao.findOrderById(id);
 	}
 
+	@Override
+	public void editStatusOrderById(String status, String id) {
+		orderDao.editStatusOrderById(status, id);
+	}
+
 }

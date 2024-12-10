@@ -2,6 +2,7 @@ package vn.HKT.daos;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.List;
 
 import vn.HKT.entities.Users;
 
@@ -20,5 +21,10 @@ public interface IUserDao {
 	void updateResetToken(String email, String token, Timestamp expiry) throws SQLException;
 
 	void updatePasswordByEmail(Users user) throws SQLException;
-
+	
+	List<Users> findAllUsers();
+	
+	Users findUserById(String id);
+	
+	void editUserRoleById(String role, String id);
 }

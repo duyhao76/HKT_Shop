@@ -21,7 +21,7 @@ public class Products {
     private String productName;
     
     @ManyToOne
-    @JoinColumn(name = "categoryId")
+    @JoinColumn(name = "categoryId", referencedColumnName = "categoryId")
     private Categories category;
     
     @Column(nullable = false)
@@ -46,8 +46,19 @@ public class Products {
     private String imgPath;
     
     @OneToMany(mappedBy = "product")
-    private List<OrderDetails> orderDetails;
+    private List<OrderDetails> orderDetails;    
     
-    @OneToMany(mappedBy = "product")
-    private List<Inventory> inventoryRecords;
+    public Products(Long productId, String productName, BigDecimal unitPrice, Integer quantityInStock, 
+            LocalDate expiryDate, String storageConditions, LocalDate createdDate, Boolean isActive, 
+            String imgPath) {
+		this.productId = productId;
+		this.productName = productName;
+		this.unitPrice = unitPrice;
+		this.quantityInStock = quantityInStock;
+		this.expiryDate = expiryDate;
+		this.storageConditions = storageConditions;
+		this.createdDate = createdDate;
+		this.isActive = isActive;
+		this.imgPath = imgPath;
+    }
 }

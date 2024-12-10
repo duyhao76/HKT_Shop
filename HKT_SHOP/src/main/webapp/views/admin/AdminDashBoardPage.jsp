@@ -5,9 +5,20 @@
 <!DOCTYPE html>
 <html>
 <body class="sb-nav-fixed">
+		<% String successMessage = (String) session.getAttribute("successMessage");
+    	if (successMessage != null) {
+		%>
+    		<script type="text/javascript">
+        	alert('<%= successMessage %>');
+    		</script>
+		<%
+        	// Xóa thông báo khỏi session sau khi hiển thị
+        	session.removeAttribute("successMessage");
+    	}
+		%>
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="AdminDashBoardPage.html">Food Store Admin</a>
+            <a class="navbar-brand ps-3" href="/HKT_SHOP/admin/dashboard">Food Store Admin</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -30,25 +41,21 @@
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
-                            <a class="nav-link" href="AdminDashBoardPage.html">
+                            <a class="nav-link" href="/HKT_SHOP/admin/dashboard">
                                 <div class="sb-nav-link-icon"><i class="fas fa-home"></i></i></div>
                                 Dashboard
                             </a>
-                            <a class="nav-link" href="AdminUserPage.html">
+                            <a class="nav-link" href="/HKT_SHOP/admin/users">
                                 <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                                 Users
                             </a>
-                            <a class="nav-link" href="AdminCategoriesPage.html">
+                            <a class="nav-link" href="/HKT_SHOP/admin/categories">
                                 <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
                                 Categories
                             </a>
-                            <a class="nav-link" href="AdminProductPage.html">
+                            <a class="nav-link" href="/HKT_SHOP/admin/products">
                                 <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
                                 Products
-                            </a>
-                            <a class="nav-link" href="AdminInventoryPage.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-warehouse"></i></div>
-                                Inventory
                             </a>
                         </div>
                     </div>

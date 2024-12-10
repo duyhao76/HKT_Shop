@@ -8,6 +8,7 @@ import java.util.List;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Query;
 import jakarta.persistence.Tuple;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.Order;
@@ -37,11 +38,9 @@ public class OrderDaoImpl implements IOrderDao{
 			String username = result.get(1, String.class);
 			
 			order.setUsername(username);
-			
 			orderList.add(order);
 		}
 		
-		enma.close();
 		return orderList;
 	}
 
@@ -61,8 +60,23 @@ public class OrderDaoImpl implements IOrderDao{
 		String username = (String) result[1];
 		
 		order.setUsername(username);
-		
+
 		return order;
 	}
 
+	@Override
+	public void editStatusOrderById(String status, String id) {
+		EntityManager enma = JPAConfig.getEntityManager();
+		enma.getTransaction().begin();
+		
+		String jpql = "UPDATE Orders o SET o.status = :status WHERE o.orderId = :orderId";
+		Query query = enma.createQuery(jpql);
+		
+		query.setParameter("status", status);
+	    query.setParameter("orderId", id);
+	    query.executeUpdate();
+	    
+	    enma.getTransaction().commit();
+	    enma.close();
+	}
 }
