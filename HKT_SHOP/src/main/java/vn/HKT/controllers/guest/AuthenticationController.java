@@ -93,7 +93,7 @@ public class AuthenticationController extends HttpServlet {
 
 				if (isRememberMe) {
 					Cookie cookie = new Cookie(Constant.COOKIE_REMEMBER, email);
-					cookie.setMaxAge(30 * 24 * 60 * 60); // Cookie tồn tại 30 ngày
+					cookie.setMaxAge(1 * 24 * 60 * 60); // Cookie tồn tại 30 ngày
 					cookie.setPath("/"); // Áp dụng trên toàn bộ ứng dụng
 					resp.addCookie(cookie);
 					System.out.println("Cookie created and sent: " + cookie.getName() + " = " + cookie.getValue());
@@ -112,7 +112,7 @@ public class AuthenticationController extends HttpServlet {
 			String password = req.getParameter("password");
 			if (email.isEmpty() || fullName.isEmpty() || password.isEmpty()) {
 				req.setAttribute("errorMessage", "Email, account and password cannot be blank");
-				req.getRequestDispatcher("/views/authentication.jsp").forward(req, resp);
+				req.getRequestDispatcher("/views/guest/authentication.jsp").forward(req, resp);
 				return;
 			}
 			// Kiểm tra xem đăng ký có thành công không
@@ -124,7 +124,7 @@ public class AuthenticationController extends HttpServlet {
 			} else {
 				// Đăng ký không thành công, hiển thị thông báo lỗi
 				req.setAttribute("errorMessage", "Email already exists or an error has occurred.");
-				req.getRequestDispatcher("/views/authentication.jsp").forward(req, resp);
+				req.getRequestDispatcher("/views/guest/authentication.jsp").forward(req, resp);
 			}
 		} else if (url.contains("/forgotpassword")) {
 			String email = req.getParameter("email");

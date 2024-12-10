@@ -3,6 +3,7 @@ package vn.HKT.daos.impl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import vn.HKT.configs.JPAConfig;
 import vn.HKT.daos.IUserDao;
@@ -10,6 +11,7 @@ import vn.HKT.entities.Users;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoImpl implements IUserDao {
@@ -21,15 +23,22 @@ public class UserDaoImpl implements IUserDao {
 	}
 
 	@Override
-	public Users findByUserName(String username) {
-		String jpql = "SELECT u FROM Users u WHERE u.username = :username";
+	public Users findByUsername(String username) {
+		EntityManager enma = JPAConfig.getEntityManager();
+
+		String jpql = "SELECT u FROM Users u " + "LEFT JOIN FETCH u.role r " + "WHERE u.username = :username";
+
+		TypedQuery<Users> query = enma.createQuery(jpql, Users.class);
+		query.setParameter("username", username);
+
 		try {
-			TypedQuery<Users> query = entityManager.createQuery(jpql, Users.class);
-			query.setParameter("username", username);
 			return query.getSingleResult();
+		} catch (NoResultException e) {
+			System.err.println("Không tìm thấy user với username: " + username);
+			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null; // Không tìm thấy user hoặc lỗi
+			return null;
 		}
 	}
 
@@ -50,14 +59,21 @@ public class UserDaoImpl implements IUserDao {
 
 	@Override
 	public Users findByEmail(String email) {
-		String jpql = "SELECT u FROM Users u WHERE u.email = :email";
+		EntityManager enma = JPAConfig.getEntityManager();
+
+		String jpql = "SELECT u FROM Users u " + "LEFT JOIN FETCH u.role r " + "WHERE u.email = :email";
+
+		TypedQuery<Users> query = enma.createQuery(jpql, Users.class);
+		query.setParameter("email", email);
+
 		try {
-			TypedQuery<Users> query = entityManager.createQuery(jpql, Users.class);
-			query.setParameter("email", email);
 			return query.getSingleResult();
+		} catch (NoResultException e) {
+			System.err.println("Không tìm thấy user với email: " + email);
+			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null; // Không tìm thấy user hoặc lỗi
+			return null;
 		}
 	}
 
@@ -69,14 +85,15 @@ public class UserDaoImpl implements IUserDao {
 			Users existingUser = findByEmail(user.getEmail());
 			if (existingUser != null) {
 				existingUser.setPassword(user.getPassword());
-				entityManager.merge(existingUser); // Cập nhật user
+				entityManager.merge(existingUser);
+			} else {
+				System.err.println("Không tìm thấy user với email: " + user.getEmail());
 			}
 			transaction.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
-			if (transaction.isActive()) {
+			if (transaction.isActive())
 				transaction.rollback();
-			}
 		}
 	}
 
@@ -84,18 +101,16 @@ public class UserDaoImpl implements IUserDao {
 	public boolean isResetTokenValid(String token) {
 		String jpql = "SELECT u.expiry FROM Users u WHERE u.token = :token";
 		try {
-			TypedQuery<Timestamp> query = entityManager.createQuery(jpql, Timestamp.class);
+			TypedQuery<LocalDateTime> query = entityManager.createQuery(jpql, LocalDateTime.class);
 			query.setParameter("token", token);
-			Timestamp expiryDate = query.getSingleResult();
-			Timestamp currentTime = Timestamp.valueOf(LocalDateTime.now());
 
-			System.out.println("Thời gian hiện tại: " + currentTime);
-			System.out.println("Thời gian hết hạn: " + expiryDate);
+			LocalDateTime expiryDate = query.getSingleResult();
+			LocalDateTime now = LocalDateTime.now().withNano(0); // Bỏ phần mili giây
 
-			return expiryDate != null && expiryDate.after(currentTime);
+			return expiryDate != null && expiryDate.isAfter(now);
 		} catch (Exception e) {
-			e.printStackTrace();
-			return false; // Không tìm thấy token hoặc lỗi
+			System.err.println("Token không hợp lệ hoặc không tồn tại: " + token);
+			return false;
 		}
 	}
 
@@ -134,43 +149,76 @@ public class UserDaoImpl implements IUserDao {
 				user.setToken(token);
 				user.setExpiry(expiry.toLocalDateTime());
 				entityManager.merge(user);
+			} else {
+				System.err.println("Không tìm thấy user với email: " + email);
 			}
 			transaction.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
-			if (transaction.isActive()) {
+			if (transaction.isActive())
 				transaction.rollback();
-			}
 		}
 	}
 
-	public static void main(String[] args) {
-		UserDaoImpl userDao = new UserDaoImpl();
+	@Override
+	public List<Users> findAll() {
+	    EntityManager entityManager = JPAConfig.getEntityManager();
+	    List<Users> users = new ArrayList<>();
 
-		// Thêm user mới
-		Users user = Users.builder().username("johndoe").password("password123").email("john.doe@example.com").build();
-		userDao.insert(user);
-
-		// Tìm user theo username
-		Users foundUser = userDao.findByUserName("johndoe");
-		System.out.println(foundUser);
-
-		// Cập nhật mật khẩu qua email
-		foundUser.setPassword("newpassword");
-		userDao.updatePasswordByEmail(foundUser);
-
-		// // Cập nhật token reset mật khẩu
-		// userDao.updateResetToken("john.doe@example.com", "reset-token-123",
-		// Timestamp.valueOf(LocalDateTime.now().plusHours(1)));
-		//
-		// // Kiểm tra token reset hợp lệ
-		// boolean isValid = userDao.isResetTokenValid("reset-token-123");
-		// System.out.println("Token hợp lệ: " + isValid);
-		//
-		// // Đổi mật khẩu bằng token
-		// userDao.updatePasswordByToken("reset-token-123", "new-secure-password");
+	    try {
+	        // Sử dụng LEFT JOIN FETCH nhưng chỉ nạp role mà không nạp users trong Roles
+	        String jpql = "SELECT u FROM Users u LEFT JOIN FETCH u.role r";
+	        users = entityManager.createQuery(jpql, Users.class).getResultList();
+	    } catch (Exception e) {
+	        e.printStackTrace(); // Ghi log lỗi nếu xảy ra ngoại lệ
+	    } finally {
+	        if (entityManager != null) {
+	            entityManager.close();
+	        }
+	    }
+	    return users;
 	}
 
+	@Override
+	public void update(Users user) {
+	    EntityTransaction transaction = entityManager.getTransaction();
+	    try {
+	        transaction.begin();
+	        Users existingUser = entityManager.find(Users.class, user.getUserId());
+	        if (existingUser != null) {
+	            // Chỉ cập nhật các trường không liên quan đến role
+	            existingUser.setUsername(user.getUsername() != null ? user.getUsername() : existingUser.getUsername());
+	            existingUser.setEmail(user.getEmail() != null ? user.getEmail() : existingUser.getEmail());
+	            existingUser.setPassword(user.getPassword() != null ? user.getPassword() : existingUser.getPassword());
+	            existingUser.setLastLogin(user.getLastLogin() != null ? user.getLastLogin() : existingUser.getLastLogin());
+	            existingUser.setToken(user.getToken() != null ? user.getToken() : existingUser.getToken());
+	            existingUser.setExpiry(user.getExpiry() != null ? user.getExpiry() : existingUser.getExpiry());
+
+	            entityManager.merge(existingUser);
+	            System.out.println("User updated successfully: " + existingUser.getUsername());
+	        } else {
+	            System.err.println("User not found with ID: " + user.getUserId());
+	        }
+	        transaction.commit();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        if (transaction.isActive()) {
+	            transaction.rollback();
+	        }
+	        throw new RuntimeException("Lỗi khi cập nhật người dùng: " + e.getMessage());
+	    }
+	}
+
+	@Override
+	public Users findById(Long userId) {
+	    try {
+	        return entityManager.find(Users.class, userId);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null; // Trả về null nếu không tìm thấy hoặc có lỗi
+	    }
+	}
+	
 	@Override
 	public List<Users> findAllUsers() {
 		EntityManager enma = JPAConfig.getEntityManager();
@@ -203,4 +251,83 @@ public class UserDaoImpl implements IUserDao {
         enma.getTransaction().commit();
 	    enma.close();
 	}
+
+	public static void main(String[] args) {
+		UserDaoImpl userDao = new UserDaoImpl();
+//	    // Thêm user mới
+//	    Users user = Users.builder()
+//	            .username("johndoe")
+//	            .password("password123")
+//	            .email("john.doe@example.com")
+//	            .build();
+//	    userDao.insert(user);
+//	    System.out.println("Inserted user: " + user.getUsername());
+
+//	 // Tìm user theo username
+//	    Users foundUser = userDao.findByUsername("johndoe");
+//	    if (foundUser != null) {
+//	        System.out.println("Username: " + foundUser.getUsername());
+//	        System.out.println("Role: " + foundUser.getRole().getRoleName());
+//	    } else {
+//	        System.out.println("User không tồn tại.");
+//	    }
+
+//		// Tìm user theo email
+//		Users foundUserByEmail = userDao.findByEmail("john.doe@example.com");
+//		if (foundUserByEmail != null) {
+//			System.out.println("Email: " + foundUserByEmail.getEmail());
+//			System.out.println("Role: " + foundUserByEmail.getRole().getRoleName());
+//		} else {
+//			System.out.println("User không tồn tại.");
+//		}
+
+//	    // Cập nhật mật khẩu qua email
+//	    if (foundUserByEmail != null) {
+//	        foundUserByEmail.setPassword("newpassword123");
+//	        userDao.updatePasswordByEmail(foundUserByEmail);
+//	        System.out.println("Updated password for email: " + foundUserByEmail.getEmail());
+//	    }
+
+//		// Cập nhật token reset mật khẩu
+//		String resetToken = "reset-token-123";
+//		userDao.updateResetToken("john.doe@example.com", resetToken,
+//				Timestamp.valueOf(LocalDateTime.now().plusHours(1)));
+//		System.out.println("Reset token updated for user: " + foundUserByEmail.getEmail());
+//
+//		// Kiểm tra token reset hợp lệ
+//		boolean isValid = userDao.isResetTokenValid(resetToken);
+//		System.out.println("Is reset token valid: " + isValid);
+//
+//		// Đổi mật khẩu bằng token
+//		userDao.updatePasswordByToken(resetToken, "new-secure-password");
+//		System.out.println("Password updated via token for user: " + foundUserByEmail.getEmail());
+		
+		// Gọi phương thức findAll
+		try {
+	        // Gọi phương thức findAll() từ DAO
+	        List<Users> users = userDao.findAll();
+
+	        if (users != null && !users.isEmpty()) {
+	            System.out.println("Danh sách người dùng:");
+	            for (Users user : users) {
+	                // In thông tin từng người dùng
+	                System.out.println("ID: " + user.getUserId());
+	                System.out.println("Username: " + user.getUsername());
+	                System.out.println("Created Date: " + user.getCreatedDate());
+	                System.out.println("Last Login: " + user.getLastLogin());
+	                System.out.println("Email: " + user.getEmail());
+	                System.out.println("----------------------");
+	            }
+	        } else {
+	            System.out.println("Không có dữ liệu user.");
+	        }
+	    } catch (Exception e) {
+	        // Ghi log lỗi nếu xảy ra ngoại lệ
+	        System.err.println("Lỗi khi truy vấn danh sách người dùng: " + e.getMessage());
+	        e.printStackTrace();
+	    }
+		
+	}
+
+
 }

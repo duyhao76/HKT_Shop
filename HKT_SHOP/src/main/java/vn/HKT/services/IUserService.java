@@ -3,6 +3,7 @@ package vn.HKT.services;
 import java.sql.SQLException;
 import java.util.List;
 
+import vn.HKT.dtos.UserDTO;
 import vn.HKT.entities.Users;
 
 public interface IUserService {
@@ -24,4 +25,14 @@ public interface IUserService {
 	Users findUserById(String id);
 	
 	void editUserRoleById(String role, String id);
+
+	List<UserDTO> getAllUsers();
+
+	Users insert(Users requestUser) throws Exception;
+
+	Users edit(Users requestUser);
+
+	Users findById(Long userId);
+
+
 }

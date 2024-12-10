@@ -39,7 +39,7 @@ public class Orders {
     @Column(length = 200)
     private String note;
     
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderDetails> orderDetails;
     
     @Transient

@@ -67,7 +67,7 @@ public class ResetPassword extends HttpServlet {
 			}
 		} catch (IllegalArgumentException e) {
 			req.setAttribute("errorMessage", "Token không hợp lệ hoặc đã hết hạn.");
-			req.getRequestDispatcher("/views/reset-password.jsp").forward(req, resp);
+			req.getRequestDispatcher("/views/guest/reset-password.jsp").forward(req, resp);
 		} catch (Exception e) {
 			req.setAttribute("errorMessage", "Lỗi không xác định: " + e.getMessage());
 			req.getRequestDispatcher("/views/guest/reset-password.jsp").forward(req, resp);

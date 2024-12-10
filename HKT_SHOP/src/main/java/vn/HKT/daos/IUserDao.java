@@ -8,11 +8,17 @@ import vn.HKT.entities.Users;
 
 public interface IUserDao {
 
-	Users findByUserName(String username);
+	Users findByUsername(String username);
 
 	Users findByEmail(String email);
 
 	void insert(Users user) throws SQLException, Exception;
+	
+	List<Users> findAllUsers();
+	
+	Users findUserById(String id);
+	
+	void editUserRoleById(String role, String id);
 
 	boolean isResetTokenValid(String token) throws SQLException;
 
@@ -21,10 +27,11 @@ public interface IUserDao {
 	void updateResetToken(String email, String token, Timestamp expiry) throws SQLException;
 
 	void updatePasswordByEmail(Users user) throws SQLException;
-	
-	List<Users> findAllUsers();
-	
-	Users findUserById(String id);
-	
-	void editUserRoleById(String role, String id);
+
+	List<Users> findAll();
+
+	void update(Users requestUser);
+
+	Users findById(Long userId);
+
 }

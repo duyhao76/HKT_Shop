@@ -6,11 +6,13 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import vn.HKT.daos.IRoleDao;
 import vn.HKT.daos.IUserDao;
 import vn.HKT.daos.impl.RoleDaoImpl;
 import vn.HKT.daos.impl.UserDaoImpl;
+import vn.HKT.dtos.UserDTO;
 import vn.HKT.entities.Roles;
 import vn.HKT.entities.Users;
 import vn.HKT.services.IUserService;
@@ -158,4 +160,84 @@ public class UserServiceImpl implements IUserService {
 	}
 	
 
+    public List<UserDTO> getAllUsers() {
+        List<Users> users = userDao.findAll();
+        // Chuyển đổi từ Users sang UserDTO
+        return users.stream().map(UserDTO::new).collect(Collectors.toList());
+    }
+
+	@Override
+	public Users insert(Users requestUser) throws Exception {
+	    // Kiểm tra email và username
+	    Users existingUserByEmail = userDao.findByEmail(requestUser.getEmail());
+	    Users existingUserByUsername = userDao.findByUsername(requestUser.getUsername());
+
+	    if (existingUserByEmail != null) {
+	        throw new IllegalArgumentException("Email đã được sử dụng.");
+	    }
+	    if (existingUserByUsername != null) {
+	        throw new IllegalArgumentException("Username đã được sử dụng.");
+	    }
+
+	    // Gọi tầng DAO để thêm mới
+	    userDao.insert(requestUser);
+	    System.out.println("User đã được thêm thành công: " + requestUser);
+	    return requestUser;
+	}
+
+	@Override
+	public Users edit(Users requestUser) {
+	    try {
+	        // Tìm người dùng hiện tại theo userId
+	        Users existingUser = userDao.findById(requestUser.getUserId());
+	        if (existingUser == null) {
+	            throw new IllegalArgumentException("Người dùng không tồn tại.");
+	        }
+
+	        // Không cho phép chỉnh sửa role
+	        requestUser.setRole(existingUser.getRole());
+
+	        // Gọi DAO để cập nhật
+	        userDao.update(requestUser);
+
+	        System.out.println("Cập nhật thành công người dùng: " + requestUser.getUsername());
+	        return requestUser;
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw new RuntimeException("Lỗi khi chỉnh sửa thông tin người dùng: " + e.getMessage());
+	    }
+	}
+
+	
+	public static void main(String[] args) {
+	    IUserService userService = new UserServiceImpl();
+
+	    try {
+	        // Giả lập chỉnh sửa thông tin người dùng
+	        Users updatedUser = Users.builder()
+	                .email("john.doe@example.com") // Người dùng cần chỉnh sửa email này
+	                .username("updatedUser")      // Cập nhật username
+	                .password("newpassword123")   // Cập nhật mật khẩu
+	                .build();
+
+	        userService.edit(updatedUser);
+
+	    } catch (Exception e) {
+	        System.out.println("Lỗi: " + e.getMessage());
+	    }
+	}
+
+	@Override
+	public Users findById(Long userId) {
+	    try {
+	        return userDao.findById(userId);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw new RuntimeException("Lỗi khi tìm người dùng với ID: " + userId);
+	    }
+	}
+
+
+	
 }

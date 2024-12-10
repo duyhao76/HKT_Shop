@@ -1,7 +1,24 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+.metadata/
+Servers/
+Tài liệu/
+keystore.jks
+Client_Secret.env
+.env
+
+=======
+.metadata/
+>>>>>>> 38706248e47126a0c6adc0089133bf936a50f6b0
+=======
 .metadata/
 keystore.jks
 Servers/
 .classpath/
 HKT_SHOP/target/m2e-wtp/web-resources/META-INF/maven/vn.HKT/HKT_SHOP/pom.properties
+<<<<<<< HEAD
 HKT_SHOP/.classpath
 HKT_SHOP/.settings/org.eclipse.wst.common.component
+=======
+>>>>>>> ec24fa02aacda4097bceb98558282f2d0c5acc23
+>>>>>>> 7b70cfacbfff05dd80beee50d7b25e978dc49e0e
