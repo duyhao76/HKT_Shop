@@ -4,7 +4,7 @@
 
 	<mapping path="/admin/*" decorator="admin.jsp" />
 	<mapping path="/user/*" decorator="user.jsp" />
-	<mapping path="/authentication/*" decorator="authentication.jsp" />
+	<mapping path="/authentication/*" decorator="/authentication.jsp" />		
 	<mapping path="/*" decorator="guest.jsp" />
 	<mapping path="/api*" exclude="true" />
 	

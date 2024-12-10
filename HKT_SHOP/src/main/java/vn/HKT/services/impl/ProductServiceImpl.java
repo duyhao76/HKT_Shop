@@ -37,4 +37,26 @@ public class ProductServiceImpl implements IProductService{
 		productDao.updateProduct(product);
 		
 	}
+
+
+	@Override
+	public List<Products> findAll() {
+		// Trả về tất cả các sản phẩm
+		return productDao.findAll();
+	}
+
+	@Override
+	public Products findById(Long id) {
+		// Tìm sản phẩm theo ID
+		return productDao.findById(id);
+	}
+
+	@Override
+	public List<Products> searchByName(String keyword) {
+		return productDao.searchByName(keyword);
+	}
+	@Override
+    public List<Products> findByCategoryId(Long categoryId) {
+        return productDao.findByCategoryId(categoryId);
+    }
 }

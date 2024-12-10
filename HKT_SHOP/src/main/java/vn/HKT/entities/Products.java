@@ -61,4 +61,8 @@ public class Products {
 		this.isActive = isActive;
 		this.imgPath = imgPath;
     }
+    public BigDecimal getPrice() {
+        return unitPrice;
+    }
+
 }
