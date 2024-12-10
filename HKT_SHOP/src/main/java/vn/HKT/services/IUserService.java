@@ -1,7 +1,9 @@
 package vn.HKT.services;
 
 import java.sql.SQLException;
+import java.util.List;
 
+import vn.HKT.dtos.UserDTO;
 import vn.HKT.entities.Users;
 
 public interface IUserService {
@@ -17,5 +19,14 @@ public interface IUserService {
 	void updatePasswordByToken(String newPassword, String resetToken) throws SQLException;
 
 	boolean updatePasswordByEmail(String email, String newPassword);
+
+	List<UserDTO> getAllUsers();
+
+	Users insert(Users requestUser) throws Exception;
+
+	Users edit(Users requestUser);
+
+	Users findById(Long userId);
+
 
 }

@@ -30,7 +30,7 @@ public class AdminFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-
+//    	chain.doFilter(request, response); // Cho phép truy cập nếu đúng quyền
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession();
@@ -39,7 +39,7 @@ public class AdminFilter implements Filter {
         Users user = (Users) session.getAttribute("account");
 
         // Kiểm tra nếu người dùng là admin (giả sử roleid 2 là admin)
-        if (user != null && user.getRole().getRoleName() == "admin") {
+        if (user != null && user.getRole().getRoleName().equals("admin")) {
             chain.doFilter(request, response); // Cho phép truy cập nếu đúng quyền
         } else {
             // Nếu không có quyền admin, chuyển hướng về trang home

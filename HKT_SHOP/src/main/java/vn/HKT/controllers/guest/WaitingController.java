@@ -28,10 +28,10 @@ public class WaitingController extends HttpServlet {
 			session.setAttribute("username", u.getUsername());
 
 			// Dựa trên roleId để chuyển hướng người dùng
-			if (u.getRole().getRoleName() == "admin") {
+			if (u.getRole().getRoleName().equals("admin")) {
 				// Nếu là admin, chuyển đến trang admin
-				resp.sendRedirect(req.getContextPath() + "/admin/home");
-			} else if (u.getRole().getRoleName() == "user") {
+				resp.sendRedirect(req.getContextPath() + "/admin/dashboard");
+			} else if (u.getRole().getRoleName().equals("user")) {
 				// Nếu là user, chuyển đến trang người dùng
 				resp.sendRedirect(req.getContextPath() + "/user/home");
 			} else {

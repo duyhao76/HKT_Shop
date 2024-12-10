@@ -28,17 +28,17 @@ public class Users {
     @Column(unique = true, length = 100)
     private String email;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roleId")
     private Roles role;
 
     @Column(nullable = false, updatable = false)
     @Builder.Default
-    private LocalDate createdDate = LocalDate.now(); // Thời gian tạo mặc định
+    private LocalDate createdDate = LocalDate.now();
 
     @Column
     @Builder.Default
-    private LocalDate lastLogin = LocalDate.now(); // Thời gian đăng nhập mặc định
+    private LocalDate lastLogin = LocalDate.now();
 
     @Column
     private String token;
@@ -46,23 +46,32 @@ public class Users {
     @Column
     private LocalDateTime expiry;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Orders> orders;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Inventory> inventoryRecords;
 
     @PrePersist
     protected void onCreate() {
-        createdDate = LocalDate.now(); // Gán thời gian tạo khi insert
-        if (role == null) { // Nếu role chưa được chỉ định
-            EntityManager em = Persistence.createEntityManagerFactory("HKT_PU").createEntityManager();
-            role = em.find(Roles.class, 1L); // Lấy role với ID = 1 từ DB
-        }
+        createdDate = LocalDate.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        lastLogin = LocalDate.now(); // Cập nhật thời gian đăng nhập khi có update
+        lastLogin = LocalDate.now();
     }
+    
+    public Users(String username, String password, String email, Roles role, String token, LocalDateTime expiry) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.token = token;
+        this.expiry = expiry;
+        this.createdDate = LocalDate.now(); // Gán giá trị mặc định
+        this.lastLogin = LocalDate.now();   // Gán giá trị mặc định
+    }
+
 }
+

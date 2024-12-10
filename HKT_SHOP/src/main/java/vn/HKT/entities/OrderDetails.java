@@ -32,4 +32,12 @@ public class OrderDetails {
     
     @Transient
     private String productname;
+    
+    public OrderDetails(OrderDetailId id, Integer quantity, BigDecimal unitPrice, String productName) {
+        this.id = id;
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
+        this.productname = productName;
+    }
+    
 }

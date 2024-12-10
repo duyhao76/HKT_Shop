@@ -23,27 +23,15 @@ public class OrderDetailDaoImpl implements IOrderDetailDao{
 	public List<OrderDetails> findOrderDetailsById(String id) {
 		EntityManager enma = JPAConfig.getEntityManager();
 		
-		String jpql = "SELECT od, p.productName " +
-	              "FROM OrderDetails od " +
-	              "JOIN od.product p " +
-	              "WHERE od.order.orderId = :orderId";
+		String jpql = "SELECT new OrderDetails(od.id, od.quantity, od.unitPrice, p.productName) " +
+                "FROM OrderDetails od " +
+                "JOIN od.product p " +
+                "WHERE od.order.orderId = :orderId";
 		
-		TypedQuery<Object[]> query = enma.createQuery(jpql, Object[].class);
+		TypedQuery<OrderDetails> query = enma.createQuery(jpql, OrderDetails.class);
 		query.setParameter("orderId", id);
 		
-		List<Object[]> results = query.getResultList();
-		List<OrderDetails> list = new ArrayList<>();
-		
-		for (Object[] result : results) {
-			OrderDetails orderDetail = (OrderDetails) result[0];
-			String productName = (String) result[1];
-			
-			orderDetail.setProductname(productName);
-			orderDetail.setOrder(null);
-			
-			list.add(orderDetail);
-		}
-		return list;
+		return query.getResultList();
 	}
 
 }

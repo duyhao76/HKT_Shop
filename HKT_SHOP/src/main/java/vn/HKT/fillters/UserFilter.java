@@ -39,7 +39,7 @@ public class UserFilter implements Filter{
 	        Users user = (Users) session.getAttribute("account");
 
 	        // Kiểm tra nếu người dùng là admin (giả sử roleid 1 là user)
-	        if (user != null && user.getRole().getRoleName() == "user") {
+	        if (user != null && user.getRole().getRoleName().equals("user")) {
 	            chain.doFilter(request, response); // Cho phép truy cập nếu đúng quyền
 	        } else {
 	            // Nếu không có quyền admin, chuyển hướng về trang home

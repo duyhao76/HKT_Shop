@@ -45,7 +45,9 @@ public class EmailService {
 				    <body style="font-family: Arial, sans-serif; line-height: 1.6;">
 				        <div style="max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
 				            <h2 style="color: #2C3E50; text-align: center;">HKT_SHOP</h2>
-				            <p>Dear <b>Customer</b>,</p>
+				            <p>Dear <b>"""+ email +"""
+				            		</b>,
+				            </p>
 				            <p>You recently requested to reset your password for your HKT_SHOP account.</p>
 				            <p>
 				                To recover your password, click the button below and set a new password:
