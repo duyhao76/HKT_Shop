@@ -21,14 +21,15 @@ version="3.0">
     <properties>
        <!--  <property name="jakarta.persistence.jdbc.url" 
                   value="jdbc:sqlserver://hktshopserver.database.windows.net:1433;database=hktshopdb;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;" /> -->
-                  
+          <!--      
         <property name="jakarta.persistence.jdbc.url" value="jdbc:sqlserver://DUYHAO\DUYHAO;databaseName=hktshopdb" />          
-        <property name="jakarta.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
         <property name="jakarta.persistence.jdbc.user" value="sysadmin@hktshopserver" />
         <property name="jakarta.persistence.jdbc.password" value="HktShop@12345" />
-        
+        -->
+        <property name="jakarta.persistence.jdbc.url" value="jdbc:sqlserver://ADMIN;databaseName=hktshopdb" />          
+        <property name="jakarta.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
         <property name="jakarta.persistence.jdbc.user" value="sa" />
-        <property name="jakarta.persistence.jdbc.password" value="Ahao25092004" />
+        <property name="jakarta.persistence.jdbc.password" value="12" />
 
         <!-- Thuộc tính Hibernate -->
         <property name="hibernate.show_sql" value="true" />

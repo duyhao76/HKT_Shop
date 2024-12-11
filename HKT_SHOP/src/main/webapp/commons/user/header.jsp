@@ -16,8 +16,8 @@
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="header__top__right">
-                                <a href="#" style="color: black;"><i class="fa fa-user"></i> Account</a>
-                                <a href="${pageContext.request.contextPath}/authentication/logout" style="color: black;">Logout</a>
+                                <a href="#" style="color: black;"><i class="fa fa-user"></i> Account |</a>
+                                <a href="${pageContext.request.contextPath}/authentication/logout" style="color: black;"> Logout</a>
                             </div>
                         </div>
                     </div>

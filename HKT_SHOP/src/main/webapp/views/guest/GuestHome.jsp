@@ -16,7 +16,9 @@
                         <ul>
                             <!-- Lặp qua danh sách các danh mục từ request -->
 					        <c:forEach var="category" items="${categoryList}">
-					            <li><a href="${pageContext.request.contextPath }/guest/category?categoryId=${category.categoryId}">${category.categoryName}</a></li>
+						        <c:if test="${category.isActive}">
+						            <li><a href="${pageContext.request.contextPath }/guest/category?categoryId=${category.categoryId}">${category.categoryName}</a></li>
+						       </c:if>
 					        </c:forEach>
                         </ul>
                     </div>
@@ -54,6 +56,7 @@
             <div class="row">
                 <div class="categories__slider owl-carousel">
                 <c:forEach var="category" items="${categoryList}">
+                	<c:if test="${category.isActive}">
                     <div class="col-lg-3">
                         <div class="categories__item set-bg">
                         	<!-- Kiểm tra nếu đường dẫn ảnh là URL (https) -->
@@ -68,6 +71,7 @@
                             <h5><a href="${pageContext.request.contextPath}/guest/category?categoryId=${category.categoryId}">${category.categoryName}</a></h5>
                         </div>
                     </div> 
+                    </c:if>
                 </c:forEach> 
                 </div>
             </div>
@@ -87,10 +91,12 @@
                     <ul>
                         <li class="active" data-filter="*" onclick="${pageContext.request.contextPath }/guest/home?categoryId=">All</li>
                         <c:forEach var="category" items="${categoryList}">
-                            <li data-filter=".${category.categoryName}" 
-                                onclick="${pageContext.request.contextPath }/guest/home?categoryId=${category.categoryId}">
-                                ${category.categoryName}
-                            </li>
+                        	<c:if test="${category.isActive}">
+	                            <li data-filter=".${category.categoryName}" 
+	                                onclick="${pageContext.request.contextPath }/guest/home?categoryId=${category.categoryId}">
+	                                ${category.categoryName}
+	                            </li>
+                            </c:if>
                         </c:forEach>
                     </ul>
                 </div>
@@ -98,36 +104,38 @@
         </div>
         <div class="row featured__filter">
             <c:forEach var="product" items="${productList}">
-                <div class="col-lg-3 col-md-4 col-sm-6 mix ${product.category.categoryName}">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg">
-                    <!-- Kiểm tra nếu đường dẫn ảnh là URL (https) -->
-                    <c:if test="${product.imgPath != null && product.imgPath.startsWith('https')}">
-                    	<a href="${pageContext.request.contextPath }/guest/detail?productId=${product.productId}">
-                        	<img src="${product.imgPath}" alt="${product.productName}" style="width: 100%; height: auto;" />
-                        </a>
-                    </c:if>
-                    
-                    <!-- Kiểm tra nếu đường dẫn ảnh là đường dẫn cục bộ -->
-                    <c:if test="${product.imgPath != null && !product.imgPath.startsWith('https')}">
-                        <c:url value="/image?fname=${product.imgPath}" var="imgUrl" />
-                        <a href="${pageContext.request.contextPath }/guest/detail?productId=${product.productId}">
-                        <img src="${imgUrl}" alt="${product.productName}" style="width: 100%; height: auto;" />
-                        </a>
-                    </c:if>
-
-                    <ul class="featured__item__pic__hover">
-                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                    </ul>
-                </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">${product.productName}</a></h6>
-                            <h5>${product.unitPrice} VNĐ</h5>
-                        </div>
-                    </div>
-                </div>
+            	<c:if test="${product.isActive}">
+	                <div class="col-lg-3 col-md-4 col-sm-6 mix ${product.category.categoryName}">
+	                    <div class="featured__item">
+	                        <div class="featured__item__pic set-bg">
+	                    <!-- Kiểm tra nếu đường dẫn ảnh là URL (https) -->
+	                    <c:if test="${product.imgPath != null && product.imgPath.startsWith('https')}">
+	                    	<a href="${pageContext.request.contextPath }/guest/detail?productId=${product.productId}">
+	                        	<img src="${product.imgPath}" alt="${product.productName}" style="width: 100%; height: auto;" />
+	                        </a>
+	                    </c:if>
+	                    
+	                    <!-- Kiểm tra nếu đường dẫn ảnh là đường dẫn cục bộ -->
+	                    <c:if test="${product.imgPath != null && !product.imgPath.startsWith('https')}">
+	                        <c:url value="/image?fname=${product.imgPath}" var="imgUrl" />
+	                        <a href="${pageContext.request.contextPath }/guest/detail?productId=${product.productId}">
+	                        <img src="${imgUrl}" alt="${product.productName}" style="width: 100%; height: auto;" />
+	                        </a>
+	                    </c:if>
+	
+	                    <ul class="featured__item__pic__hover">
+	                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
+	                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+	                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+	                    </ul>
+	                </div>
+	                        <div class="featured__item__text">
+	                            <h6><a href="#">${product.productName}</a></h6>
+	                            <h5>${product.unitPrice} VNĐ</h5>
+	                        </div>
+	                    </div>
+	                </div>
+                </c:if>
             </c:forEach>
         </div>
     </div>

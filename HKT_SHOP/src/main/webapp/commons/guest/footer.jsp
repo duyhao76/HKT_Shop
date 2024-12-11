@@ -8,8 +8,8 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__about__logo">
-                            <a href="${pageContext.request.contextPath }/user/home">
-                            <img src="${URL}ogani-master/img/logo.png" alt="">
+                            <a href="${pageContext.request.contextPath }/guest/home">
+                            <img src="${URL}login-page-devforum\images\hktshop-logo.png" alt="" style="height: 80px;">
                             </a>
                         </div>
                         <ul>

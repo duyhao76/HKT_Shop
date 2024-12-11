@@ -11,6 +11,7 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import vn.HKT.entities.Users;
 import vn.HKT.utils.Constant;
 
@@ -33,53 +34,60 @@ public class SecurityFilter implements Filter {
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-	        throws IOException, ServletException {
+			throws IOException, ServletException {
 
-	    HttpServletRequest req = (HttpServletRequest) request;
-	    HttpServletResponse resp = (HttpServletResponse) response;
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse resp = (HttpServletResponse) response;
 
-	    try {
-	        // Kiểm tra các điều kiện và gọi chain.doFilter nếu hợp lệ
-	        if (isStaticResource(req.getServletPath())) {
-	            chain.doFilter(request, response);
-	            return;
-	        }
-	        // Kiểm tra người dùng và các điều kiện khác
-	        Users user = (Users) req.getSession().getAttribute("account");
-	        if (user != null && (user.getRole().getRoleName().equals("admin") || user.getRole().getRoleName().equals("user"))) {
-	            chain.doFilter(request, response);
-	            return;
-	        }
+		HttpSession session = req.getSession();
+		String servletPath = req.getServletPath();
+		String queryString = req.getQueryString();
 
-	        // Kiểm tra URL và tham số độc hại
-	        String servletPath = req.getServletPath();
-	        String queryString = req.getQueryString();
-	        if (isMalicious(servletPath) || (queryString != null && isMalicious(queryString))) {
-	            logAndBlock(resp, "Blocked request with potential attack", servletPath + "?" + queryString);
-	            return;
-	        }
+		try {
+			// Bỏ qua các tệp tĩnh
+			if (isStaticResource(servletPath)) {
+				chain.doFilter(request, response);
+				return;
+			}
 
-	        Enumeration<String> paramNames = request.getParameterNames();
-	        while (paramNames.hasMoreElements()) {
-	            String param = paramNames.nextElement();
-	            String value = request.getParameter(param);
-	            if (value != null && isMalicious(value)) {
-	                logAndBlock(resp, "Blocked parameter with potential attack", param + " = " + value);
-	                return;
-	            }
-	        }
+			// Kiểm tra người dùng trong session
+			Users user = (Users) session.getAttribute("account");
 
-	        chain.doFilter(request, response);
+			// Nếu người dùng là admin hoặc user (hệ thống tin tưởng người dùng), cho phép
+			// tiếp tục
+			if (user != null
+					&& ((user.getRole().getRoleName() == "admin") || (user.getRole().getRoleName() == "user"))) {
+				chain.doFilter(request, response);
+				return;
+			}
 
-	    } catch (Exception e) {
-	        // Xử lý ngoại lệ
-	        if (!resp.isCommitted()) {
-	            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal server error occurred.");
-	        } else {
-	            // Nếu response đã cam kết, chỉ ghi log lỗi
-	            System.err.println("Error in SecurityFilter: " + e.getMessage());
-	        }
-	    }
+			// Kiểm tra nội dung độc hại trong URL và query string
+			if (isMalicious(servletPath) || (queryString != null && isMalicious(queryString))) {
+				logAndBlock(resp, "Blocked request with potential attack", servletPath + "?" + queryString);
+				return;
+			}
+
+			// Kiểm tra tham số đầu vào của request
+			Enumeration<String> paramNames = request.getParameterNames();
+			while (paramNames.hasMoreElements()) {
+				String param = paramNames.nextElement();
+				String value = request.getParameter(param);
+
+				// Nếu phát hiện chuỗi độc hại trong tham số
+				if (value != null && isMalicious(value)) {
+					logAndBlock(resp, "Blocked parameter with potential attack", param + " = " + value);
+					return;
+				}
+			}
+
+			// Nếu không phát hiện vấn đề, tiếp tục chuỗi lọc
+			chain.doFilter(request, response);
+
+		} catch (Exception e) {
+			// Xử lý ngoại lệ không mong muốn
+			System.err.println("SecurityFilter encountered an error: " + e.getMessage());
+			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal server error occurred.");
+		}
 	}
 
 	// Phương thức kiểm tra nội dung độc hại
@@ -101,14 +109,9 @@ public class SecurityFilter implements Filter {
 		return false;
 	}
 
+	// Phương thức ghi log và chặn yêu cầu
 	private void logAndBlock(HttpServletResponse resp, String logMessage, String detail) throws IOException {
-	    System.out.println(logMessage + ": " + detail);
-	    if (!resp.isCommitted()) {
-	        resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Request blocked due to potential malicious content.");
-	    } else {
-	        // Nếu response đã cam kết, chỉ ghi log lỗi
-	        System.err.println("Response already committed, unable to send error: " + logMessage + ": " + detail);
-	    }
+		System.out.println(logMessage + ": " + detail);
+		resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Request blocked due to potential malicious content.");
 	}
-
 }

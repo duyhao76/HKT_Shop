@@ -40,7 +40,7 @@ public class WaitingController extends HttpServlet {
 			}
 		} else {
 			// Nếu không có session hoặc không đăng nhập, chuyển hướng đến trang chủ
-			resp.sendRedirect(req.getContextPath() + "/home");
+			resp.sendRedirect(req.getContextPath() + "/guest/home");
 		}
 	}
 }

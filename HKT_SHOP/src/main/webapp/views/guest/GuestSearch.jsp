@@ -16,7 +16,9 @@
                         <ul>
                             <!-- Lặp qua danh sách các danh mục từ request -->
 					        <c:forEach var="category" items="${categoryList}">
-					            <li><a href="${pageContext.request.contextPath }/guest/category?categoryId=${category.categoryId}">${category.categoryName}</a></li>
+					        	<c:if test="${category.isActive}">
+					            	<li><a href="${pageContext.request.contextPath }/guest/category?categoryId=${category.categoryId}">${category.categoryName}</a></li>
+					        	</c:if>
 					        </c:forEach>
                         </ul>
                     </div>
@@ -70,6 +72,7 @@
                 <div class="col">
                     <div class="row">
     <c:forEach var="product" items="${productList}">
+    	<c:if test="${product.isActive}">
         <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="product__item">
                 <!-- Hình ảnh sản phẩm -->
@@ -102,6 +105,7 @@
                 </div>
             </div>
         </div>  
+      </c:if>
     </c:forEach>
 </div>
 
