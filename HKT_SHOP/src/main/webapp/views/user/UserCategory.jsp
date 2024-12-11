@@ -3,7 +3,7 @@
 <%@ include file="/commons/taglib.jsp"%>
 <c:url value="/" var="URL"></c:url>
 <!DOCTYPE html>
-<!-- Hero Section Begin -->
+	<!-- Hero Section Begin -->
     <section class="hero hero-normal">
         <div class="container">
             <div class="row">
@@ -124,7 +124,7 @@
                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a href="${pageContext.request.contextPath }/cart"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                 </div>
                 

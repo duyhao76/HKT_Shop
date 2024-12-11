@@ -124,13 +124,13 @@
                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a href="${pageContext.request.contextPath}/authentication/login"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                 </div>
                 
                 <!-- Thông tin sản phẩm -->
                 <div class="product__item__text">
-                    <h6><a href="#">${product.productName}</a></h6>
+                    <h6><a href="/cart">${product.productName}</a></h6>
                     <h5>${product.unitPrice} VNĐ</h5>
                 </div>
             </div>

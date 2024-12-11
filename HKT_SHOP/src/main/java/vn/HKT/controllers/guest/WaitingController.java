@@ -26,7 +26,7 @@ public class WaitingController extends HttpServlet {
 
 			// Set thuộc tính username cho request nếu cần sử dụng ở view
 			session.setAttribute("username", u.getUsername());
-
+			
 			// Dựa trên roleId để chuyển hướng người dùng
 			if (u.getRole().getRoleName().equals("admin")) {
 				// Nếu là admin, chuyển đến trang admin

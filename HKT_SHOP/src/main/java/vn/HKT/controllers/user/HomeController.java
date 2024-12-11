@@ -9,26 +9,32 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import vn.HKT.entities.Cart;
 import vn.HKT.entities.Categories;
 import vn.HKT.entities.Products;
+import vn.HKT.services.ICartService;
 import vn.HKT.services.ICategoryService;
 import vn.HKT.services.IProductService;
+import vn.HKT.services.impl.CartServiceImpl;
 import vn.HKT.services.impl.CategoryServiceImpl;
 import vn.HKT.services.impl.ProductServiceImpl;
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
-@WebServlet(urlPatterns = { "/user/home", "/user/search" })
+@WebServlet(urlPatterns = { "/user/home", "/user/search"})
 public class HomeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private IProductService productService = new ProductServiceImpl();
 	private ICategoryService categoryService = new CategoryServiceImpl();
+	private ICartService cartService = new CartServiceImpl();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String url = req.getRequestURI();
 		req.setCharacterEncoding("UTF-8");
 		resp.setCharacterEncoding("UTF-8");
-
+		HttpSession session = req.getSession();
+				
 		// Xử lý cho trang home
 		if (url.contains("home")) {
 			// Lấy tất cả danh mục

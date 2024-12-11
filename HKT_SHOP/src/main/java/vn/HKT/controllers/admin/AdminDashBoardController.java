@@ -30,9 +30,4 @@ public class AdminDashBoardController extends HttpServlet{
 			req.getRequestDispatcher("/views/admin/AdminDashBoardPage.jsp").forward(req, resp);
 		}
 	}
-	
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-	}
 }

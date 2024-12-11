@@ -74,7 +74,7 @@
                                         <i class="fas fa-users"></i>
                                     </div>
                                 </div>
-                                <h3>1,234</h3>
+                                <h3>15</h3>
                             </div>
                             <div class="card">
                                 <div class="card-header">
@@ -83,7 +83,7 @@
                                         <i class="fas fa-box"></i>
                                     </div>
                                 </div>
-                                <h3>567</h3>
+                                <h3>30</h3>
                             </div>
                             <div class="card">
                                 <div class="card-header">
@@ -92,7 +92,7 @@
                                         <i class="fas fa-shopping-cart"></i>
                                     </div>
                                 </div>
-                                <h3>89</h3>
+                                <h3>20</h3>
                             </div>
                             <div class="card">
                                 <div class="card-header">
@@ -101,7 +101,7 @@
                                         <i class="fas fa-dollar-sign"></i>
                                     </div>
                                 </div>
-                                <h3>$12,345</h3>
+                                <h3>15.020.000đ</h3>
                             </div>
                         </div>
                     

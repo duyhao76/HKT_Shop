@@ -135,5 +135,4 @@ public class UserApiController extends HttpServlet {
 	        mapper.writeValue(response.getOutputStream(), "{\"error\": \"Internal server error: " + e.getMessage() + "\"}");
 	    }
 	}
-
 }
