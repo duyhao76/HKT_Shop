@@ -9,6 +9,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import vn.HKT.entities.Categories;
 import vn.HKT.entities.Products;
 import vn.HKT.services.ICategoryService;
@@ -25,6 +26,8 @@ public class HomeController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	    HttpSession session = req.getSession();
+	    Long userId = (Long) session.getAttribute("userId");		
 		String url = req.getRequestURI();
 		req.setCharacterEncoding("UTF-8");
 		resp.setCharacterEncoding("UTF-8");
@@ -63,7 +66,6 @@ public class HomeController extends HttpServlet {
 				// Nếu không có từ khóa tìm kiếm, lấy tất cả sản phẩm
 				productList = productService.findAll();
 			}
-
 			// Lấy tất cả danh mục
 			List<Categories> categoryList = categoryService.findAll();
 			req.setAttribute("categoryList", categoryList);
@@ -71,5 +73,6 @@ public class HomeController extends HttpServlet {
 
 			req.getRequestDispatcher("/views/user/UserSearch.jsp").forward(req, resp);
 		}
+	
 	}
 }

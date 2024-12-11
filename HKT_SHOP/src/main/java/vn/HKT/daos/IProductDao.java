@@ -2,6 +2,7 @@ package vn.HKT.daos;
 
 import java.util.List;
 
+import vn.HKT.entities.Cart;
 import vn.HKT.entities.Products;
 
 public interface IProductDao {

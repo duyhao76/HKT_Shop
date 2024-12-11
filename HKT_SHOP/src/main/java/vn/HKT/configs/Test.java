@@ -1,23 +1,22 @@
 package vn.HKT.configs;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
+import vn.HKT.configs.JPAConfig;
+import java.util.List;
 
 public class Test {
-	public static void main(String[] args) {
-		EntityManager enma = JPAConfig.getEntityManager();
-		EntityTransaction trans = enma.getTransaction();
-
-		try {
-			trans.begin();
-			trans.commit();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			trans.rollback();
-			throw e;
-		} finally {
-			enma.close();
-		}
-	}
+    public static void main(String[] args) {
+        EntityManager em = null;
+        try {
+            em = JPAConfig.getEntityManager();
+            System.out.println("Kết nối thành công!");
+        } catch (Exception e) {
+            System.out.println("Kết nối thất bại: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
 }

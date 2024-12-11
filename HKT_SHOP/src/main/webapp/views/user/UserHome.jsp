@@ -121,12 +121,15 @@
                         <img src="${imgUrl}" alt="${product.productName}" style="width: 100%; height: auto;" />
                     </c:if>
 
-                    <ul class="featured__item__pic__hover">
-                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                    </ul>
-                </div>
+				                   <ul class="featured__item__pic__hover">
+				    <li><a href="#"><i class="fa fa-heart"></i></a></li>
+				    <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+				<li>
+				    <c:url value="/user/cart?userId=1" var="cartUrl" />
+				    <a href="${cartUrl}"><i class="fa fa-shopping-cart"></i></a>
+				</li>
+				</ul>
+                </div> 
                         <div class="featured__item__text">
                             <h6><a href="#">${product.productName}</a></h6>
                             <h5>${product.unitPrice} VNĐ</h5>
@@ -141,7 +144,7 @@
 
 
     <!-- Banner Begin -->
-    <div class="banner">
+    <div class="banner">	
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6">
@@ -422,5 +425,5 @@
             </div>
         </div>
     </section>
-    <!-- Blog Section End -->
+    <!-- Blog Section End --> 
    
