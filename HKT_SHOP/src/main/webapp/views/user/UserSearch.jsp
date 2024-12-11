@@ -53,7 +53,7 @@
                     <div class="breadcrumb__text">
                         <h2>HTK SHOP</h2>
                         <div class="breadcrumb__option">
-                            <a href="./index.html">Home</a>
+                            <a href="${pageContext.request.contextPath }/user/home">Home</a>
                             <span>Shop</span>
                         </div>
                     </div>
@@ -76,13 +76,17 @@
                 <div class="product__item__pic set-bg">
                     <!-- Kiểm tra nếu đường dẫn ảnh là URL (https) -->
                     <c:if test="${product.imgPath != null && product.imgPath.startsWith('https')}">
-                        <img src="${product.imgPath}" alt="${product.productName}" style="width: 100%; height: auto;" />
+                        <a href="${pageContext.request.contextPath }/user/detail?productId=${product.productId}">
+                        	<img src="${product.imgPath}" alt="${product.productName}" style="width: 100%; height: auto;" />
+                        </a>
                     </c:if>
                     
                     <!-- Kiểm tra nếu đường dẫn ảnh là đường dẫn cục bộ -->
                     <c:if test="${product.imgPath != null && !product.imgPath.startsWith('https')}">
                         <c:url value="/image?fname=${product.imgPath}" var="imgUrl" />
+                        <a href="${pageContext.request.contextPath }/user/detail?productId=${product.productId}">
                         <img src="${imgUrl}" alt="${product.productName}" style="width: 100%; height: auto;" />
+                        </a>
                     </c:if>
                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
@@ -100,8 +104,6 @@
         </div>  
     </c:forEach>
 </div>
-
-
                     <div class="product__pagination">
                         <a href="#">1</a>
                         <a href="#">2</a>

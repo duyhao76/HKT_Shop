@@ -16,7 +16,7 @@
                         <ul>
                             <!-- Lặp qua danh sách các danh mục từ request -->
 					        <c:forEach var="category" items="${categoryList}">
-					            <li><a href="${pageContext.request.contextPath }/user/category?categoryId=${category.categoryId}">${category.categoryName}</a></li>
+					            <li><a href="${pageContext.request.contextPath }/guest/category?categoryId=${category.categoryId}">${category.categoryName}</a></li>
 					        </c:forEach>
                         </ul>
                     </div>
@@ -24,7 +24,7 @@
                 <div class="col-lg-9">
                     <div class="hero__search">
                         <div class="hero__search__form">
-                            <form action="${pageContext.request.contextPath }/user/search" method="GET">
+                            <form action="${pageContext.request.contextPath }/guest/search" method="GET">
                                 <input type="text" name="keyword" placeholder="What do you need?">
                                 <button type="submit" class="site-btn">SEARCH</button>
                             </form>

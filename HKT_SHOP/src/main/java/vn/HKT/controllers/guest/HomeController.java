@@ -1,4 +1,4 @@
-package vn.HKT.controllers.user;
+package vn.HKT.controllers.guest;
 
 import java.io.IOException;
 import java.util.List;
@@ -9,7 +9,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import vn.HKT.entities.Categories;
 import vn.HKT.entities.Products;
 import vn.HKT.services.ICategoryService;
@@ -18,7 +17,7 @@ import vn.HKT.services.impl.CategoryServiceImpl;
 import vn.HKT.services.impl.ProductServiceImpl;
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
-@WebServlet(urlPatterns = { "/user/home", "/user/search" })
+@WebServlet(urlPatterns = { "/guest/home", "/guest/search" })
 public class HomeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private IProductService productService = new ProductServiceImpl();
@@ -26,8 +25,6 @@ public class HomeController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	    HttpSession session = req.getSession();
-	    Long userId = (Long) session.getAttribute("userId");		
 		String url = req.getRequestURI();
 		req.setCharacterEncoding("UTF-8");
 		resp.setCharacterEncoding("UTF-8");
@@ -52,7 +49,7 @@ public class HomeController extends HttpServlet {
 			}
 
 			req.setAttribute("productList", productList);
-			req.getRequestDispatcher("/views/user/UserHome.jsp").forward(req, resp);
+			req.getRequestDispatcher("/views/guest/GuestHome.jsp").forward(req, resp);
 
 		} else if (url.contains("search")) {
 			// Xử lý tìm kiếm sản phẩm theo tên
@@ -66,13 +63,12 @@ public class HomeController extends HttpServlet {
 				// Nếu không có từ khóa tìm kiếm, lấy tất cả sản phẩm
 				productList = productService.findAll();
 			}
+
 			// Lấy tất cả danh mục
 			List<Categories> categoryList = categoryService.findAll();
 			req.setAttribute("categoryList", categoryList);
 			req.setAttribute("productList", productList);
-
-			req.getRequestDispatcher("/views/user/UserSearch.jsp").forward(req, resp);
+			req.getRequestDispatcher("/views/guest/GuestSearch.jsp").forward(req, resp);
 		}
-	
 	}
 }

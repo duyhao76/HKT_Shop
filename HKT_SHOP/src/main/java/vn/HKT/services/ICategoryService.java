@@ -6,4 +6,6 @@ import vn.HKT.entities.Categories;
 
 public interface ICategoryService {
 	List<Categories> findAll();
+
+	Categories findById(Long categoryId);
 }

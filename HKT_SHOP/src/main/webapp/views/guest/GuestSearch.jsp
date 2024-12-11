@@ -16,7 +16,7 @@
                         <ul>
                             <!-- Lặp qua danh sách các danh mục từ request -->
 					        <c:forEach var="category" items="${categoryList}">
-					            <li><a href="${pageContext.request.contextPath }/user/category?categoryId=${category.categoryId}">${category.categoryName}</a></li>
+					            <li><a href="${pageContext.request.contextPath }/guest/category?categoryId=${category.categoryId}">${category.categoryName}</a></li>
 					        </c:forEach>
                         </ul>
                     </div>
@@ -24,7 +24,7 @@
                 <div class="col-lg-9">
                     <div class="hero__search">
                         <div class="hero__search__form">
-                            <form action="${pageContext.request.contextPath }/user/search" method="GET">
+                            <form action="${pageContext.request.contextPath }/guest/search" method="GET">
                                 <input type="text" name="keyword" placeholder="What do you need?">
                                 <button type="submit" class="site-btn">SEARCH</button>
                             </form>
@@ -53,7 +53,7 @@
                     <div class="breadcrumb__text">
                         <h2>HTK SHOP</h2>
                         <div class="breadcrumb__option">
-                            <a href="${pageContext.request.contextPath }/user/home">Home</a>
+                            <a href="${pageContext.request.contextPath }/guest/home">Home</a>
                             <span>Shop</span>
                         </div>
                     </div>
@@ -67,40 +67,7 @@
     <section class="product spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3 col-md-5">
-                    <div class="sidebar">
-                        <div class="sidebar__item">
-                            <h4>Category</h4>
-                            <ul>
-                            <!-- Lặp qua danh sách các danh mục từ request -->
-					        <c:forEach var="category" items="${categoryList}">
-					            <li><a href="${pageContext.request.contextPath }/user/category?categoryId=${category.categoryId}">${category.categoryName}</a></li>
-					        </c:forEach>
-                        </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-9 col-md-7">
-                    
-                    <div class="filter__item">
-                        <div class="section-title product__discount__title">
-                            <h2>${category.categoryName}</h2>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-4 col-md-5">
-                                <div class="filter__sort">
-								    <span>Sort By</span>
-								    <form action="${pageContext.request.contextPath}/user/category" method="GET">
-								    <input type="hidden" name="categoryId" value="${category.categoryId}">
-								        <select name="sortBy" onchange="this.form.submit()">
-								            <option value="1">Default</option>
-								            <option value="2">Price</option>
-								        </select>
-								    </form>
-								</div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col">
                     <div class="row">
     <c:forEach var="product" items="${productList}">
         <div class="col-lg-3 col-md-6 col-sm-6">
@@ -109,7 +76,7 @@
                 <div class="product__item__pic set-bg">
                     <!-- Kiểm tra nếu đường dẫn ảnh là URL (https) -->
                     <c:if test="${product.imgPath != null && product.imgPath.startsWith('https')}">
-                        <a href="${pageContext.request.contextPath }/user/detail?productId=${product.productId}">
+                        <a href="${pageContext.request.contextPath }/guest/detail?productId=${product.productId}">
                         	<img src="${product.imgPath}" alt="${product.productName}" style="width: 100%; height: auto;" />
                         </a>
                     </c:if>
@@ -117,7 +84,7 @@
                     <!-- Kiểm tra nếu đường dẫn ảnh là đường dẫn cục bộ -->
                     <c:if test="${product.imgPath != null && !product.imgPath.startsWith('https')}">
                         <c:url value="/image?fname=${product.imgPath}" var="imgUrl" />
-                        <a href="${pageContext.request.contextPath }/user/detail?productId=${product.productId}">
+                        <a href="${pageContext.request.contextPath }/guest/detail?productId=${product.productId}">
                         <img src="${imgUrl}" alt="${product.productName}" style="width: 100%; height: auto;" />
                         </a>
                     </c:if>

@@ -8,9 +8,15 @@ import vn.HKT.services.ICategoryService;
 
 public class CategoryServiceImpl implements ICategoryService {
 	private ICategoryDao categoryDao = new CategoryDaoImpl();
+
 	@Override
 	public List<Categories> findAll() {
 		return categoryDao.findAll();
+	}
+
+	@Override
+	public Categories findById(Long categoryId) {
+		return categoryDao.findById(categoryId);
 	}
 
 }

@@ -31,7 +31,7 @@
                                 </ul>
                             </div>
                             <div class="header__top__right__auth">
-                                <a href="#"><i class="fa fa-user"></i> Account</a>
+                                <a href="#"><i class="fa fa-user"></i> Login</a>
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="header__logo">
-                        <a href="${pageContext.request.contextPath }/user/home"><img src="${URL}ogani-master/img/logo.png" alt=""></a>
+                        <a href="${pageContext.request.contextPath }/guest/home"><img src="${URL}ogani-master/img/logo.png" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-6">
